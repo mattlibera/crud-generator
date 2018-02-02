@@ -17,6 +17,7 @@ class CrudViewCommand extends Command
                             {--fields= : The field names for the form.}
                             {--view-path= : The name of the view path.}
                             {--route-group= : Prefix of the route group.}
+                            {--route-name-prefix= : Additional naming prefix for the route resource group.}
                             {--pk=id : The name of the primary key.}
                             {--validations= : Validation rules for the fields.}
                             {--form-helper=html : Helper for the form.}
@@ -92,6 +93,7 @@ class CrudViewCommand extends Command
         'routePrefix',
         'routePrefixCap',
         'routeGroup',
+        'routeNamePrefix',
         'formHeadingHtml',
         'formBodyHtml',
         'viewTemplateDir',
@@ -181,6 +183,13 @@ class CrudViewCommand extends Command
      * @var string
      */
     protected $routePrefix = '';
+
+    /**
+     * Additional prefix for route names
+     *
+     * @var string
+     */
+    protected $routeNamePrefix = '';
 
     /**
      * Prefix of the route with first letter in capital letter
@@ -277,10 +286,11 @@ class CrudViewCommand extends Command
         $this->customData = $this->option('custom-data');
         $this->primaryKey = $this->option('pk');
         $this->routeGroup = ($this->option('route-group'))
-            ? $this->option('route-group') . '/'
+            ? $this->option('route-group') . '.' // changed to . for use with route naming
             : $this->option('route-group');
         $this->routePrefix = ($this->option('route-group')) ? $this->option('route-group') : '';
         $this->routePrefixCap = ucfirst($this->routePrefix);
+        $this->routeNamePrefix = $this->option('route-name-prefix') ? $this->option('route-name-prefix') : '';
         $this->viewName = snake_case($this->argument('name'), '-');
 
         $viewDirectory = config('view.paths')[0] . '/';
@@ -361,11 +371,11 @@ class CrudViewCommand extends Command
     private function defaultTemplating()
     {
         return [
-            'index' => ['formHeadingHtml', 'formBodyHtml', 'crudName', 'crudNameCap', 'modelName', 'viewName', 'routeGroup', 'primaryKey'],
+            'index' => ['formHeadingHtml', 'formBodyHtml', 'crudName', 'crudNameCap', 'modelName', 'viewName', 'routeGroup', 'routeNamePrefix', 'primaryKey'],
             'form' => ['formFieldsHtml'],
-            'create' => ['crudName', 'crudNameCap', 'modelName', 'modelNameCap', 'viewName', 'routeGroup', 'viewTemplateDir'],
-            'edit' => ['crudName', 'crudNameSingular', 'crudNameCap', 'modelNameCap', 'modelName', 'viewName', 'routeGroup', 'primaryKey', 'viewTemplateDir'],
-            'show' => ['formHeadingHtml', 'formBodyHtml', 'formBodyHtmlForShowView', 'crudName', 'crudNameSingular', 'crudNameCap', 'modelName', 'viewName', 'routeGroup', 'primaryKey'],
+            'create' => ['crudName', 'crudNameCap', 'modelName', 'modelNameCap', 'viewName', 'routeGroup', 'routeNamePrefix', 'viewTemplateDir'],
+            'edit' => ['crudName', 'crudNameSingular', 'crudNameCap', 'modelNameCap', 'modelName', 'viewName', 'routeGroup', 'routeNamePrefix', 'primaryKey', 'viewTemplateDir'],
+            'show' => ['formHeadingHtml', 'formBodyHtml', 'formBodyHtmlForShowView', 'crudName', 'crudNameSingular', 'crudNameCap', 'modelName', 'viewName', 'routeGroup', 'routeNamePrefix', 'primaryKey'],
         ];
     }
 
@@ -379,6 +389,8 @@ class CrudViewCommand extends Command
         $dynamicViewTemplate = config('crudgenerator.dynamic_view_template')
             ? config('crudgenerator.dynamic_view_template')
             : $this->defaultTemplating();
+
+//        dd($dynamicViewTemplate);
 
         foreach ($dynamicViewTemplate as $name => $vars) {
             $file = $this->viewDirectoryPath . $name . '.blade.stub';

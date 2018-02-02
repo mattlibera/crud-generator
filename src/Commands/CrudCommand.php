@@ -26,6 +26,7 @@ class CrudCommand extends Command
                             {--relationships= : The relationships for the model.}
                             {--route=yes : Include Crud route to routes.php? yes|no.}
                             {--route-group= : Prefix of the route group.}
+                            {--route-name-prefix= : Additional naming prefix for the route resource group.}
                             {--view-path= : The name of the view path.}
                             {--form-helper=html : Helper for generating the form.}
                             {--localize=no : Allow to localize? yes|no.}
@@ -41,6 +42,9 @@ class CrudCommand extends Command
 
     /** @var string  */
     protected $routeName = '';
+
+    /** @var string  */
+    protected $routeNamePrefix = '';
 
     /** @var string  */
     protected $controller = '';
@@ -70,6 +74,8 @@ class CrudCommand extends Command
         $routeGroup = $this->option('route-group');
         $this->routeName = ($routeGroup) ? $routeGroup . '/' . snake_case($name, '-') : snake_case($name, '-');
         $perPage = intval($this->option('pagination'));
+
+        $this->routeNamePrefix = $this->option('route-name-prefix') ? $this->option('route-name-prefix') : '';
 
         $controllerNamespace = ($this->option('controller-namespace')) ? $this->option('controller-namespace') . '\\' : '';
         $modelNamespace = ($this->option('model-namespace')) ? trim($this->option('model-namespace')) . '\\' : '';
@@ -127,7 +133,7 @@ class CrudCommand extends Command
         $this->call('crud:controller', ['name' => $controllerNamespace . $name . 'Controller', '--crud-name' => $name, '--model-name' => $modelName, '--model-namespace' => $modelNamespace, '--view-path' => $viewPath, '--route-group' => $routeGroup, '--pagination' => $perPage, '--fields' => $fields, '--validations' => $validations]);
         $this->call('crud:model', ['name' => $modelNamespace . $modelName, '--fillable' => $fillable, '--table' => $tableName, '--pk' => $primaryKey, '--relationships' => $relationships, '--soft-deletes' => $softDeletes]);
         $this->call('crud:migration', ['name' => $migrationName, '--schema' => $migrationFields, '--pk' => $primaryKey, '--indexes' => $indexes, '--foreign-keys' => $foreignKeys, '--soft-deletes' => $softDeletes]);
-        $this->call('crud:view', ['name' => $name, '--fields' => $fields, '--validations' => $validations, '--view-path' => $viewPath, '--route-group' => $routeGroup, '--localize' => $localize, '--pk' => $primaryKey, '--form-helper' => $formHelper]);
+        $this->call('crud:view', ['name' => $name, '--fields' => $fields, '--validations' => $validations, '--view-path' => $viewPath, '--route-group' => $routeGroup, '--route-name-prefix' => $this->routeNamePrefix, '--localize' => $localize, '--pk' => $primaryKey, '--form-helper' => $formHelper]);
         if ($localize == 'yes') {
             $this->call('crud:lang', ['name' => $name, '--fields' => $fields, '--locales' => $locales]);
         }
@@ -161,7 +167,15 @@ class CrudCommand extends Command
      */
     protected function addRoutes()
     {
-        return ["Route::resource('" . $this->routeName . "', '" . $this->controller . "');"];
+        if ($this->option('route-name-prefix')) {
+            $routesText = [
+"Route::name('" . $this->routeNamePrefix . "')->group(function() {
+    Route::resource('" . $this->routeName . "', '" . $this->controller . "');
+});"];
+        } else {
+            $routesText = ["Route::resource('" . $this->routeName . "', '" . $this->controller . "');"];
+        }
+        return $routesText;
     }
 
     /**
