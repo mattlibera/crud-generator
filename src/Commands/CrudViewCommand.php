@@ -61,9 +61,9 @@ class CrudViewCommand extends Command
         'mediumint' => 'number',
         'tinyint' => 'number',
         'smallint' => 'number',
-        'decimal' => 'number',
-        'double' => 'number',
-        'float' => 'number',
+        'decimal' => 'decimal', // replace later
+        'double' => 'decimal',
+        'float' => 'decimal',
         'date' => 'date',
         'datetime' => 'datetime-local',
         'timestamp' => 'datetime-local',
@@ -332,6 +332,18 @@ class CrudViewCommand extends Command
                     $this->formFields[$x]['options'] = $options;
                 }
 
+                $stepFields = ['decimal', 'float', 'double'];
+                if (in_array($this->formFields[$x]['type'], $stepFields)) {
+                    if (isset($itemArray[2])) {
+                        $step = trim($itemArray[2]);
+                        $step = str_replace('step=', '', $step);
+                    } else {
+                        $step = 'any';
+                    }
+
+                    $this->formFields[$x]['step'] = $step;
+                }
+
                 $x++;
             }
         }
@@ -485,6 +497,8 @@ class CrudViewCommand extends Command
             case 'select':
             case 'enum':
                 return $this->createSelectField($item);
+            case 'decimal':
+                return $this->createDecimalField($item);
             default: // text
                 return $this->createFormField($item);
         }
@@ -629,6 +643,35 @@ class CrudViewCommand extends Command
         $markup = str_replace($start . 'required' . $end, $required, $markup);
         $markup = str_replace($start . 'options' . $end, $item['options'], $markup);
         $markup = str_replace($start . 'itemName' . $end, $item['name'], $markup);
+        $markup = str_replace($start . 'crudNameSingular' . $end, $this->crudNameSingular, $markup);
+
+        return $this->wrapField(
+            $item,
+            $markup
+        );
+    }
+
+    /**
+     * Create a number input field with 'step' option using the form helper.
+     *
+     * @param  array $item
+     *
+     * @return string
+     */
+    protected function createDecimalField($item)
+    {
+        $start = $this->delimiter[0];
+        $end = $this->delimiter[1];
+
+        $required = $item['required'] ? 'required' : '';
+
+        $stepValue = isset($item['step']) ? $item['step'] : 'any';
+
+        $markup = File::get($this->viewDirectoryPath . 'form-fields/decimal-field.blade.stub');
+        $markup = str_replace($start . 'required' . $end, $required, $markup);
+        $markup = str_replace($start . 'fieldType' . $end, 'number', $markup);
+        $markup = str_replace($start . 'itemName' . $end, $item['name'], $markup);
+        $markup = str_replace($start . 'stepValue' . $end, $stepValue, $markup);
         $markup = str_replace($start . 'crudNameSingular' . $end, $this->crudNameSingular, $markup);
 
         return $this->wrapField(
