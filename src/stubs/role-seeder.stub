@@ -1,0 +1,58 @@
+<?php
+
+namespace App\Seeders;
+
+use App\CcpsCore\Role;
+use Illuminate\Support\Facades\App;
+use Uncgits\Ccps\Exceptions\InvalidSeedDataException;
+use Uncgits\Ccps\Seeders\CcpsValidatedSeeder;
+
+class WvRoleSeeder extends CcpsValidatedSeeder
+{
+    /**
+     * Run the database seeds.
+     *
+     * @return void
+     */
+    public function run()
+    {
+        $writeConsoleOutput = App::runningInConsole();
+
+        if ($writeConsoleOutput) {
+            // get console output
+            $output = $this->command->getOutput();
+        }
+
+        $roles = {{rolesArray}};
+
+
+
+        $writeConsoleOutput = App::runningInConsole();
+
+        if ($writeConsoleOutput) {
+            // get console output
+            $output = $this->command->getOutput();
+        }
+
+        // validate
+        try {
+            $this->validateSeedData($roles, $this->roleArrayConstruction);
+            $this->checkForExistingSeedData($roles, Role::all());
+
+            $mergeData = [
+                'source_package' => '{{packageName}}',
+                'created_at' => date("Y-m-d H:i:s", time()),
+                'updated_at' => date("Y-m-d H:i:s", time()),
+                'editable' => 0
+            ];
+
+            $this->commitSeedData($roles, 'ccps_roles', $mergeData);
+
+        } catch (InvalidSeedDataException $e) {
+            if ($writeConsoleOutput) {
+                $output->error($e->getMessage());
+                return;
+            }
+        }
+    }
+}
