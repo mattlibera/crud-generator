@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\App;
 use Uncgits\Ccps\Exceptions\InvalidSeedDataException;
 use Uncgits\Ccps\Seeders\CcpsValidatedSeeder;
 
-class WvRoleSeeder extends CcpsValidatedSeeder
+class {{className}}RolesSeeder extends CcpsValidatedSeeder
 {
     /**
      * Run the database seeds.

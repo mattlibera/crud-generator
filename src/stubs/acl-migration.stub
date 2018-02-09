@@ -1,0 +1,75 @@
+<?php
+
+use App\CcpsCore\Permission;
+use App\CcpsCore\Role;
+use App\CcpsCore\User;
+use Illuminate\Database\Migrations\Migration;
+
+class Add{{className}}RolesAndPermissions extends Migration
+{
+    /**
+     * Run the migrations.
+     *
+     * @return void
+     */
+    public function up()
+    {
+        Artisan::call('db:seed', [
+            '--class' => 'App\\Seeders\\{{className}}RolesSeeder',
+            '--force' => 'true'
+        ]);
+
+        Artisan::call('db:seed', [
+            '--class' => 'App\\Seeders\\{{className}}PermissionsSeeder',
+            '--force' => 'true'
+        ]);
+
+        // attach the roles and permissions to one another
+        $roles = Role::all();
+
+        {{attachmentLogic}}
+
+    }
+
+    /**
+     * Reverse the migrations.
+     *
+     * @return void
+     */
+    public function down()
+    {
+        // get the roles
+        $webexRole = Role::where('name', 'viewer-webex')->first();
+        $cirqliveRole = Role::where('name', 'viewer-cirqlive')->first();
+
+        // get the permissions
+        $webexPermission = Permission::where('name', 'webex.view')->first();
+        $cirqlivePermission = Permission::where('name', 'cirqlive.view')->first();
+
+        // find users who have the roles
+        $webexRoleUsers = User::whereHas('roles', function($query) {
+            $query->where('name', 'viewer-webex');
+        })->get();
+
+        $cirqliveRoleUsers = User::whereHas('roles', function($query) {
+            $query->where('name', 'viewer-cirqlive');
+        })->get();
+
+        // remove roles from existing users
+        foreach($webexRoleUsers as $user) {
+            $user->roles()->detach($webexRole->id);
+        }
+
+        foreach($cirqliveRoleUsers as $user) {
+            $user->roles()->detach($cirqliveRole->id);
+        }
+
+        // delete roles
+        $webexRole->delete();
+        $cirqliveRole->delete();
+
+        // delete permissions
+        $webexPermission->delete();
+        $cirqlivePermission->delete();
+    }
+}

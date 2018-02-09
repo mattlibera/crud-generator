@@ -4,24 +4,24 @@ namespace Appzcoder\CrudGenerator\Commands;
 
 use Illuminate\Console\GeneratorCommand;
 
-class CrudPermissionCommand extends GeneratorCommand
+class CrudRoleCommand extends GeneratorCommand
 {
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'crud:permission
+    protected $signature = 'crud:role
                             {name : The name of the model.}
-                            {package : The name of the package to which to bind these permissions.}
-                            {--permissions= : JSON string for custom permissions.}';
+                            {package : The name of the package to which to bind these roles.}
+                            {--roles= : JSON string for custom roles.}';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Create a new seeder for basic CRUD operations on a model.';
+    protected $description = 'Create a new seeder for a new role based on CRUD access to a model.';
 
     /**
      * The type of class being generated.
@@ -38,8 +38,8 @@ class CrudPermissionCommand extends GeneratorCommand
     protected function getStub()
     {
         return config('crudgenerator.custom_template')
-        ? config('crudgenerator.path') . '/permission-seeder.stub'
-        : __DIR__ . '/../stubs/permission-seeder.stub';
+        ? config('crudgenerator.path') . '/role-seeder.stub'
+        : __DIR__ . '/../stubs/role-seeder.stub';
     }
 
     /**
@@ -66,15 +66,13 @@ class CrudPermissionCommand extends GeneratorCommand
 
         $stub = $this->files->get($this->getStub());
 
-        $permissions = $this->option('permissions') ? json_decode($this->option('permissions'), true) : [
-            $model . '.create' => 'Create ' . str_plural($model),
-            $model . '.read' => 'Read / View ' . str_plural($model),
-            $model . '.update' => 'Update / Edit ' . str_plural($model),
-            $model . '.delete' => 'Delete ' . str_plural($model),
+        $roles = $this->option('roles') ? json_decode($this->option('roles'), true) : [
+            $model . '.viewer' => 'Can view ' . str_plural($model),
+            $model . '.editor' => 'Can create, edit, and delete ' . str_plural($model),
         ];
 
         $ret = $this->replaceClassName($stub, ucwords($model))
-            ->replacePermissions($stub, $permissions)
+            ->replaceRoles($stub, $roles)
             ->replacePackageName($stub, $this->argument('package'));
 
         return $ret->replaceClass($stub, $name);
@@ -88,7 +86,7 @@ class CrudPermissionCommand extends GeneratorCommand
      */
     protected function getPath($name)
     {
-        return base_path('database/seeds/' . ucwords($this->argument('name')) . 'PermissionsSeeder.php');
+        return base_path('database/seeds/' . ucwords($this->argument('name')) . 'RolesSeeder.php');
     }
 
     /**
@@ -107,24 +105,24 @@ class CrudPermissionCommand extends GeneratorCommand
     }
 
     /**
-     * Replace the permissions array for the given stub.
+     * Replace the roles array for the given stub.
      *
      * @param  string  $stub
-     * @param  array  $permissionsArray
+     * @param  array  $rolesArray
      *
      * @return $this
      */
-    protected function replacePermissions(&$stub, $permissionsArray)
+    protected function replaceRoles(&$stub, $rolesArray)
     {
         $replaceString = '[';
-        foreach($permissionsArray as $permission => $description) {
+        foreach($rolesArray as $role => $description) {
             $replaceString .= "
-        '$permission' => '$description',";
+            '$role' => '$description',";
         }
         $replaceString .= '
-    ]';
+        ]';
 
-        $stub = str_replace('{{permissionsArray}}', $replaceString, $stub);
+        $stub = str_replace('{{rolesArray}}', $replaceString, $stub);
 
         return $this;
     }
