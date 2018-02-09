@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\App;
 use Uncgits\Ccps\Exceptions\InvalidSeedDataException;
 use Uncgits\Ccps\Seeders\CcpsValidatedSeeder;
 
-class WvPermissionSeeder extends CcpsValidatedSeeder
+class {{className}}Seeder extends CcpsValidatedSeeder
 {
     public $permissions = {{permissionsArray}};
 

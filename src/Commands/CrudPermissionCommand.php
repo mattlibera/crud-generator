@@ -50,7 +50,7 @@ class CrudPermissionCommand extends GeneratorCommand
      */
     protected function getDefaultNamespace($rootNamespace)
     {
-        return $rootNamespace;
+        return $rootNamespace . '\\' . 'Seeders';
     }
 
     /**
@@ -73,25 +73,58 @@ class CrudPermissionCommand extends GeneratorCommand
             $model . '.delete' => 'Delete ' . str_plural($model),
         ];
 
-        $permissionsAsString = "$permissions";
-
-        $ret = $this->replacePermissions($stub, $permissionsAsString)
+        $ret = $this->replaceClassName($stub, ucwords($model))
+            ->replacePermissions($stub, $permissions)
             ->replacePackageName($stub, $this->argument('package'));
 
         return $ret->replaceClass($stub, $name);
     }
 
     /**
+     * Get the destination class path.
+     *
+     * @param  string  $name
+     * @return string
+     */
+    protected function getPath($name)
+    {
+        return base_path('database/seeds/' . ucwords($this->argument('name')) . 'Seeder.php');
+    }
+
+    /**
+     * Replace the class name for the given stub.
+     *
+     * @param  string  $stub
+     * @param  string  $className
+     *
+     * @return $this
+     */
+    protected function replaceClassName(&$stub, $className)
+    {
+        $stub = str_replace('{{className}}', $className, $stub);
+
+        return $this;
+    }
+
+    /**
      * Replace the permissions array for the given stub.
      *
      * @param  string  $stub
-     * @param  string  $permissionsArray
+     * @param  array  $permissionsArray
      *
      * @return $this
      */
     protected function replacePermissions(&$stub, $permissionsArray)
     {
-        $stub = str_replace('{{permissionsArray}}', $permissionsArray, $stub);
+        $replaceString = '[';
+        foreach($permissionsArray as $permission => $description) {
+            $replaceString .= "
+        '$permission' => '$description',";
+        }
+        $replaceString .= '
+    ]';
+
+        $stub = str_replace('{{permissionsArray}}', $replaceString, $stub);
 
         return $this;
     }
