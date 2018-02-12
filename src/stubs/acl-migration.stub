@@ -39,7 +39,7 @@ class Add{{className}}RolesAndPermissions extends Migration
 
         // attach the roles and permissions to one another
         foreach ($this->bindings as $role => $permissions) {
-            $roleModel = Role::where('name', $role)->get();
+            $roleModel = Role::where('name', $role)->first();
             $roleModel->attachPermissions($permissions);
         }
 
@@ -71,7 +71,7 @@ class Add{{className}}RolesAndPermissions extends Migration
 
         // get the permissions
         foreach($this->bindings as $role => $permissions) {
-            $roleModel = Role::where('name', $role)->get();
+            $roleModel = Role::where('name', $role)->first();
             $roleModel->detachPermissions($permissions);
             $deletedPermissions = Permission::whereIn('name', $permissions)->delete();
             $deletedRole = $roleModel->delete();
