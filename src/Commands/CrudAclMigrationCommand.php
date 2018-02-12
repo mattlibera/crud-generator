@@ -3,6 +3,7 @@
 namespace Appzcoder\CrudGenerator\Commands;
 
 use Illuminate\Console\GeneratorCommand;
+use Carbon\Carbon;
 
 class CrudAclMigrationCommand extends GeneratorCommand
 {
@@ -13,7 +14,7 @@ class CrudAclMigrationCommand extends GeneratorCommand
      */
     protected $signature = 'crud:acl-migration
                             {name : The name of the model.}
-                            {package : The name of the package to which the ACL permissions and roles are bound.}';
+                            {--bindings : Custom array of role=>permissionArray bindings to use.}';
     /**
      * The console command description.
      *
@@ -26,7 +27,7 @@ class CrudAclMigrationCommand extends GeneratorCommand
      *
      * @var string
      */
-    protected $type = 'Seeder';
+    protected $type = 'Migration';
 
     /**
      * Get the stub file for the generator.
@@ -48,7 +49,7 @@ class CrudAclMigrationCommand extends GeneratorCommand
      */
     protected function getDefaultNamespace($rootNamespace)
     {
-        return $rootNamespace . '\\' . 'Seeders';
+        return $rootNamespace . '\\' . 'Migrations';
     }
 
     /**
@@ -75,14 +76,8 @@ class CrudAclMigrationCommand extends GeneratorCommand
             ]
         ];
 
-        // TODO - attachment logic
-        $attachmentLogic = <<<EOD
-
-EOD;
-
-
-        $ret = $this->replaceClassName($stub, ucwords($model))
-            ->replaceAttachmentLogic($stub, $attachmentLogic);
+        $ret = $this->replaceBindings($stub, $bindings)
+            ->replaceClassName($stub, ucwords($model));
 
         return $ret->replaceClass($stub, $name);
     }
@@ -95,7 +90,39 @@ EOD;
      */
     protected function getPath($name)
     {
-        return base_path('database/seeds/' . ucwords($this->argument('name')) . 'RolesSeeder.php');
+        return base_path('database/migrations/' . Carbon::now()->format('Y_m_d_his') . '_add_' . $this->argument('name') . '_roles_and_permissions.php');
+    }
+
+    /**
+     * Replace the role/permission bindings for the given stub.
+     *
+     * @param  string  $stub
+     * @param  array  $bindings
+     *
+     * @return $this
+     */
+    protected function replaceBindings(&$stub, $bindings)
+    {
+        $replaceString = '[';
+        foreach($bindings as $role => $permissions) {
+            $replaceString .= "
+            '$role' => [";
+            foreach($permissions as $permission) {
+                $replaceString .= "
+                '$permission',";
+            }
+            $replaceString .= '
+            ],';
+
+
+        }
+        $replaceString .= '
+        ];';
+
+
+        $stub = str_replace('{{bindings}}', $replaceString, $stub);
+
+        return $this;
     }
 
     /**
@@ -109,21 +136,6 @@ EOD;
     protected function replaceClassName(&$stub, $className)
     {
         $stub = str_replace('{{className}}', $className, $stub);
-
-        return $this;
-    }
-
-    /**
-     * Replace the roles array for the given stub.
-     *
-     * @param  string  $stub
-     * @param  array  $rolesArray
-     *
-     * @return $this
-     */
-    protected function replaceAttachmentLogic(&$stub, $attachmentLogic)
-    {
-        $stub = str_replace('{{attachmentLogic}}', $attachmentLogic, $stub);
 
         return $this;
     }

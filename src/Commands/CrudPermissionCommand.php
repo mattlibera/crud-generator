@@ -67,10 +67,26 @@ class CrudPermissionCommand extends GeneratorCommand
         $stub = $this->files->get($this->getStub());
 
         $permissions = $this->option('permissions') ? json_decode($this->option('permissions'), true) : [
-            $model . '.create' => 'Create ' . str_plural($model),
-            $model . '.read' => 'Read / View ' . str_plural($model),
-            $model . '.update' => 'Update / Edit ' . str_plural($model),
-            $model . '.delete' => 'Delete ' . str_plural($model),
+            [
+                'name' => $model . '.create',
+                'display_name' => ucwords($model) . ' - Create',
+                'description' => 'Create ' . str_plural($model),
+            ],
+            [
+                'name' => $model . '.read',
+                'display_name' => ucwords($model) . ' - Read',
+                'description' => 'Read / View ' . str_plural($model),
+            ],
+            [
+                'name' => $model . '.update',
+                'display_name' => ucwords($model) . ' - Update',
+                'description' => 'Update / Edit ' . str_plural($model),
+            ],
+            [
+                'name' => $model . '.delete',
+                'display_name' => ucwords($model) . ' - Delete',
+                'description' => 'Delete ' . str_plural($model),
+            ],
         ];
 
         $ret = $this->replaceClassName($stub, ucwords($model))
@@ -117,9 +133,13 @@ class CrudPermissionCommand extends GeneratorCommand
     protected function replacePermissions(&$stub, $permissionsArray)
     {
         $replaceString = '[';
-        foreach($permissionsArray as $permission => $description) {
+        foreach($permissionsArray as $permission) {
             $replaceString .= "
-        '$permission' => '$description',";
+        [
+            'name' => '{$permission['name']}',
+            'display_name' => '{$permission['display_name']}',
+            'description' => '{$permission['description']}',
+        ],";
         }
         $replaceString .= '
     ]';

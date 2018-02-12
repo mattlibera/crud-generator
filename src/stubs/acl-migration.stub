@@ -4,9 +4,21 @@ use App\CcpsCore\Permission;
 use App\CcpsCore\Role;
 use App\CcpsCore\User;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Support\Facades\Artisan;
 
 class Add{{className}}RolesAndPermissions extends Migration
 {
+    // role/permission bindings
+    protected $bindings;
+
+    /**
+     * Constructor
+     */
+    public function __construct() {
+        $this->bindings = {{bindings}}
+    }
+
+
     /**
      * Run the migrations.
      *
@@ -24,10 +36,12 @@ class Add{{className}}RolesAndPermissions extends Migration
             '--force' => 'true'
         ]);
 
-        // attach the roles and permissions to one another
-        $roles = Role::all();
 
-        {{attachmentLogic}}
+        // attach the roles and permissions to one another
+        foreach ($this->bindings as $role => $permissions) {
+            $roleModel = Role::where('name', $role)->get();
+            $roleModel->attachPermissions($permissions);
+        }
 
     }
 
@@ -38,38 +52,29 @@ class Add{{className}}RolesAndPermissions extends Migration
      */
     public function down()
     {
-        // get the roles
-        $webexRole = Role::where('name', 'viewer-webex')->first();
-        $cirqliveRole = Role::where('name', 'viewer-cirqlive')->first();
+        // which roles?
+        $rolesToFind = array_keys($this->bindings);
 
-        // get the permissions
-        $webexPermission = Permission::where('name', 'webex.view')->first();
-        $cirqlivePermission = Permission::where('name', 'cirqlive.view')->first();
+        // get the roles
+        $roleIds = Role::whereIn('name', $rolesToFind)->get()->pluck('id');
+
 
         // find users who have the roles
-        $webexRoleUsers = User::whereHas('roles', function($query) {
-            $query->where('name', 'viewer-webex');
-        })->get();
-
-        $cirqliveRoleUsers = User::whereHas('roles', function($query) {
-            $query->where('name', 'viewer-cirqlive');
+        $usersWithRoles = User::whereHas('roles', function($query) use ($rolesToFind) {
+            $query->whereIn('name', $rolesToFind);
         })->get();
 
         // remove roles from existing users
-        foreach($webexRoleUsers as $user) {
-            $user->roles()->detach($webexRole->id);
+        foreach($usersWithRoles as $user) {
+            $user->roles()->detach($roleIds);
         }
 
-        foreach($cirqliveRoleUsers as $user) {
-            $user->roles()->detach($cirqliveRole->id);
+        // get the permissions
+        foreach($this->bindings as $role => $permissions) {
+            $roleModel = Role::where('name', $role)->get();
+            $roleModel->detachPermissions($permissions);
+            $deletedPermissions = Permission::whereIn('name', $permissions)->delete();
+            $deletedRole = $roleModel->delete();
         }
-
-        // delete roles
-        $webexRole->delete();
-        $cirqliveRole->delete();
-
-        // delete permissions
-        $webexPermission->delete();
-        $cirqlivePermission->delete();
     }
 }

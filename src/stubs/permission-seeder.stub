@@ -34,7 +34,7 @@ class {{className}}PermissionsSeeder extends CcpsValidatedSeeder
                 'source_package' => '{{packageName}}',
                 'created_at' => date("Y-m-d H:i:s", time()),
                 'updated_at' => date("Y-m-d H:i:s", time()),
-                'editable' => 0
+                'editable' => 1
             ];
 
             $this->commitSeedData($this->permissions, 'ccps_permissions', $mergeData);

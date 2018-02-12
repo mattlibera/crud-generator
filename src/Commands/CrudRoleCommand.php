@@ -67,8 +67,16 @@ class CrudRoleCommand extends GeneratorCommand
         $stub = $this->files->get($this->getStub());
 
         $roles = $this->option('roles') ? json_decode($this->option('roles'), true) : [
-            $model . '.viewer' => 'Can view ' . str_plural($model),
-            $model . '.editor' => 'Can create, edit, and delete ' . str_plural($model),
+            [
+                'name' => $model . '.viewer',
+                'display_name' => ucwords($model) . ' - Viewer',
+                'description' => 'Can view ' . str_plural($model),
+            ],
+            [
+                'name' => $model . '.editor',
+                'display_name' => ucwords($model) . ' - Editor',
+                'description' => 'Can create, edit, and delete ' . str_plural($model),
+            ],
         ];
 
         $ret = $this->replaceClassName($stub, ucwords($model))
@@ -115,9 +123,13 @@ class CrudRoleCommand extends GeneratorCommand
     protected function replaceRoles(&$stub, $rolesArray)
     {
         $replaceString = '[';
-        foreach($rolesArray as $role => $description) {
+        foreach($rolesArray as $role) {
             $replaceString .= "
-            '$role' => '$description',";
+            [
+                'name' => '{$role['name']}',
+                'display_name' => '{$role['display_name']}',
+                'description' => '{$role['description']}',
+            ],";
         }
         $replaceString .= '
         ]';
