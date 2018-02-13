@@ -1,6 +1,6 @@
 <?php
 
-namespace Mattlibera\CrudGenerator\Commands;
+namespace Uncgits\CrudGenerator\Commands;
 
 use Illuminate\Console\GeneratorCommand;
 

@@ -1,5 +1,5 @@
 {
-    "name": "mattlibera/crud-generator",
+    "name": "uncgits/crud",
     "license": "MIT",
     "description": "Laravel CRUD Generator",
     "keywords": [
@@ -34,7 +34,7 @@
     },
     "autoload": {
         "psr-4": {
-            "Mattlibera\\CrudGenerator\\": "src/"
+            "Uncgits\\CrudGenerator\\": "src/"
         },
         "classmap": [
             "tests"
@@ -43,7 +43,7 @@
     "extra": {
         "laravel": {
             "providers": [
-                "Mattlibera\\CrudGenerator\\CrudGeneratorServiceProvider"
+                "Uncgits\\CrudGenerator\\CrudGeneratorServiceProvider"
             ]
         }
     }

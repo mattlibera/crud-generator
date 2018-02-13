@@ -1,14 +1,14 @@
 ## Installation
 
-To get started, you should add the `mattlibera/crud-generator` Composer dependency to your project:
+To get started, you should add the `uncgits/crud` Composer dependency to your project:
 ```
-composer require mattlibera/crud-generator --dev
+composer require uncgits/crud --dev
 ```
-Once the package is installed, you should register the `Mattlibera\CrudGenerator\CrudGeneratorServiceProvider` service provider. Normally, Laravel 5.5+ will register the service provider automatically.
+Once the package is installed, you should register the `Uncgits\CrudGenerator\CrudGeneratorServiceProvider` service provider. Normally, Laravel 5.5+ will register the service provider automatically.
 
 After that, publish its assets using the `vendor:publish` Artisan command:
 ```
-php artisan vendor:publish --provider="Mattlibera\CrudGenerator\CrudGeneratorServiceProvider"
+php artisan vendor:publish --provider="Uncgits\CrudGenerator\CrudGeneratorServiceProvider"
 ```
 
 ### Laravel older 5.5
@@ -19,7 +19,7 @@ If you're using an older verson of Laravel (<5.5) then just manually add the pro
 public function register()
 {
     if ($this->app->environment() == 'local') {
-        $this->app->register('Mattlibera\CrudGenerator\CrudGeneratorServiceProvider');
+        $this->app->register('Uncgits\CrudGenerator\CrudGeneratorServiceProvider');
     }
 }
 ```

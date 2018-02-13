@@ -1,6 +1,6 @@
 <?php
 
-namespace Mattlibera\CrudGenerator;
+namespace Uncgits\CrudGenerator;
 
 use Illuminate\Support\ServiceProvider;
 
@@ -47,18 +47,18 @@ class CrudGeneratorServiceProvider extends ServiceProvider
     public function register()
     {
         $this->commands(
-            'Mattlibera\CrudGenerator\Commands\CrudCommand',
-            'Mattlibera\CrudGenerator\Commands\CrudControllerCommand',
-            'Mattlibera\CrudGenerator\Commands\CrudModelCommand',
-            'Mattlibera\CrudGenerator\Commands\CrudMigrationCommand',
-            'Mattlibera\CrudGenerator\Commands\CrudViewCommand',
-            'Mattlibera\CrudGenerator\Commands\CrudLangCommand',
-            'Mattlibera\CrudGenerator\Commands\CrudApiCommand',
-            'Mattlibera\CrudGenerator\Commands\CrudApiControllerCommand',
-            'Mattlibera\CrudGenerator\Commands\CrudRoleCommand',
-            'Mattlibera\CrudGenerator\Commands\CrudPermissionCommand',
-            'Mattlibera\CrudGenerator\Commands\CrudAclMigrationCommand',
-            'Mattlibera\CrudGenerator\Commands\CrudAclCommand'
+            'Uncgits\CrudGenerator\Commands\CrudCommand',
+            'Uncgits\CrudGenerator\Commands\CrudControllerCommand',
+            'Uncgits\CrudGenerator\Commands\CrudModelCommand',
+            'Uncgits\CrudGenerator\Commands\CrudMigrationCommand',
+            'Uncgits\CrudGenerator\Commands\CrudViewCommand',
+            'Uncgits\CrudGenerator\Commands\CrudLangCommand',
+            'Uncgits\CrudGenerator\Commands\CrudApiCommand',
+            'Uncgits\CrudGenerator\Commands\CrudApiControllerCommand',
+            'Uncgits\CrudGenerator\Commands\CrudRoleCommand',
+            'Uncgits\CrudGenerator\Commands\CrudPermissionCommand',
+            'Uncgits\CrudGenerator\Commands\CrudAclMigrationCommand',
+            'Uncgits\CrudGenerator\Commands\CrudAclCommand'
         );
     }
 }

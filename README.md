@@ -2,7 +2,7 @@
 
 This Generator package provides various generators like CRUD, API, Controller, Model, Migration, View for your painless development of your applications.
 
-This is a fork of the original `mattlibera/crud-generator` package.
+This is a fork of the original `uncgits/crud` package.
 
 ## Requirements
     Laravel >=5.1
@@ -11,7 +11,7 @@ This is a fork of the original `mattlibera/crud-generator` package.
 
 ## Installation
 ```
-composer require mattlibera/crud-generator --dev
+composer require uncgits/crud --dev
 ```
 
 ## Documentation
