@@ -149,10 +149,12 @@ class CrudCommand extends Command
         $formHelper = $this->option('form-helper');
         $softDeletes = $this->option('soft-deletes');
 
-        $this->call('crud:controller', ['name' => $controllerNamespace . $name . 'Controller', '--crud-name' => $name, '--model-name' => $modelName, '--model-namespace' => $modelNamespace, '--view-path' => $viewPath, '--route-group' => $routeGroup, '--pagination' => $perPage, '--fields' => $fields, '--validations' => $validations]);
+        $acl = $this->option('acl');
+
+        $this->call('crud:controller', ['name' => $controllerNamespace . $name . 'Controller', '--crud-name' => $name, '--model-name' => $modelName, '--model-namespace' => $modelNamespace, '--view-path' => $viewPath, '--route-group' => $routeGroup, '--pagination' => $perPage, '--fields' => $fields, '--validations' => $validations, '--acl' => $acl]);
         $this->call('crud:model', ['name' => $modelNamespace . $modelName, '--fillable' => $fillable, '--table' => $tableName, '--pk' => $primaryKey, '--relationships' => $relationships, '--soft-deletes' => $softDeletes]);
         $this->call('crud:migration', ['name' => $migrationName, '--schema' => $migrationFields, '--pk' => $primaryKey, '--indexes' => $indexes, '--foreign-keys' => $foreignKeys, '--soft-deletes' => $softDeletes]);
-        $this->call('crud:view', ['name' => $name, '--fields' => $fields, '--validations' => $validations, '--view-path' => $viewPath, '--route-group' => $routeGroup, '--route-name-prefix' => $this->routeNamePrefix, '--localize' => $localize, '--pk' => $primaryKey, '--form-helper' => $formHelper]);
+        $this->call('crud:view', ['name' => $name, '--fields' => $fields, '--validations' => $validations, '--view-path' => $viewPath, '--route-group' => $routeGroup, '--route-name-prefix' => $this->routeNamePrefix, '--localize' => $localize, '--pk' => $primaryKey, '--form-helper' => $formHelper, '--acl' => $acl]);
 
         if ($this->option('acl') == 'yes') {
             $aclArgumentsAndOptions = [

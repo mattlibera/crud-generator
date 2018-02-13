@@ -22,7 +22,8 @@ class CrudViewCommand extends Command
                             {--validations= : Validation rules for the fields.}
                             {--form-helper=html : Helper for the form.}
                             {--custom-data= : Some additional values to use in the crud.}
-                            {--localize=no : Localize the view? yes|no.}';
+                            {--localize=no : Localize the view? yes|no.}
+                            {--acl=yes : Include ACL permission directives around buttons.}';
 
     /**
      * The console command description.
@@ -98,6 +99,11 @@ class CrudViewCommand extends Command
         'formBodyHtml',
         'viewTemplateDir',
         'formBodyHtmlForShowView',
+        'aclPermissionCreate',
+        'aclPermissionRead',
+        'aclPermissionUpdate',
+        'aclPermissionDelete',
+        'aclEndPermission'
     ];
 
     /**
@@ -225,6 +231,16 @@ class CrudViewCommand extends Command
      * @var string
      */
     protected $formBodyHtmlForShowView = '';
+
+    /**
+     * ACL template items
+     */
+
+    protected $aclPermissionCreate = '';
+    protected $aclPermissionRead = '';
+    protected $aclPermissionUpdate = '';
+    protected $aclPermissionDelete = '';
+    protected $aclEndPermission = '';
 
     /**
      * User defined values
@@ -370,6 +386,15 @@ class CrudViewCommand extends Command
             $i++;
         }
 
+        // ACL
+        if ($this->option('acl') == 'yes') {
+            $this->aclPermissionCreate = "@permission('{$this->crudName}.create')";
+            $this->aclPermissionRead = "@permission('{$this->crudName}.read')";
+            $this->aclPermissionUpdate = "@permission('{$this->crudName}.update')";
+            $this->aclPermissionDelete = "@permission('{$this->crudName}.delete')";
+            $this->aclEndPermission = "@endpermission";
+        }
+
         $this->templateStubs($path);
 
         $this->info('View created successfully.');
@@ -383,11 +408,11 @@ class CrudViewCommand extends Command
     private function defaultTemplating()
     {
         return [
-            'index' => ['formHeadingHtml', 'formBodyHtml', 'crudName', 'crudNameCap', 'modelName', 'viewName', 'routeGroup', 'routeNamePrefix', 'primaryKey'],
+            'index' => ['formHeadingHtml', 'formBodyHtml', 'crudName', 'crudNameCap', 'modelName', 'viewName', 'routeGroup', 'routeNamePrefix', 'primaryKey', 'aclPermissionCreate', 'aclPermissionRead', 'aclPermissionUpdate', 'aclPermissionDelete', 'aclEndPermission'],
             'form' => ['formFieldsHtml'],
             'create' => ['crudName', 'crudNameCap', 'modelName', 'modelNameCap', 'viewName', 'routeGroup', 'routeNamePrefix', 'viewTemplateDir'],
             'edit' => ['crudName', 'crudNameSingular', 'crudNameCap', 'modelNameCap', 'modelName', 'viewName', 'routeGroup', 'routeNamePrefix', 'primaryKey', 'viewTemplateDir'],
-            'show' => ['formHeadingHtml', 'formBodyHtml', 'formBodyHtmlForShowView', 'crudName', 'crudNameSingular', 'crudNameCap', 'modelName', 'viewName', 'routeGroup', 'routeNamePrefix', 'primaryKey'],
+            'show' => ['formHeadingHtml', 'formBodyHtml', 'formBodyHtmlForShowView', 'crudName', 'crudNameSingular', 'crudNameCap', 'modelName', 'viewName', 'routeGroup', 'routeNamePrefix', 'primaryKey', 'aclPermissionCreate', 'aclPermissionRead', 'aclPermissionUpdate', 'aclPermissionDelete', 'aclEndPermission'],
         ];
     }
 

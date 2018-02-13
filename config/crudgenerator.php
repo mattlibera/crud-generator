@@ -52,15 +52,20 @@ return [
     | routeNamePrefix
     | formHeadingHtml
     | formBodyHtml
+    | aclPermissionCreate
+    | aclPermissionRead
+    | aclPermissionUpdate
+    | aclPermissionDelete
+    | aclEndPermission
     |
     |
      */
     'dynamic_view_template' => [
-        'index' => ['formHeadingHtml', 'formBodyHtml', 'crudName', 'crudNameCap', 'modelName', 'viewName', 'routeGroup', 'routeNamePrefix', 'primaryKey'],
+        'index' => ['formHeadingHtml', 'formBodyHtml', 'crudName', 'crudNameCap', 'modelName', 'viewName', 'routeGroup', 'routeNamePrefix', 'primaryKey', 'aclPermissionCreate', 'aclPermissionRead', 'aclPermissionUpdate', 'aclPermissionDelete', 'aclEndPermission'],
         'form' => ['formFieldsHtml'],
         'create' => ['crudName', 'crudNameCap', 'modelName', 'modelNameCap', 'viewName', 'routeGroup', 'routeNamePrefix', 'viewTemplateDir'],
         'edit' => ['crudName', 'crudNameSingular', 'crudNameCap', 'modelNameCap', 'modelName', 'viewName', 'routeGroup', 'routeNamePrefix', 'primaryKey', 'viewTemplateDir'],
-        'show' => ['formHeadingHtml', 'formBodyHtml', 'formBodyHtmlForShowView', 'crudName', 'crudNameSingular', 'crudNameCap', 'modelName', 'viewName', 'routeGroup', 'routeNamePrefix', 'primaryKey'],
+        'show' => ['formHeadingHtml', 'formBodyHtml', 'formBodyHtmlForShowView', 'crudName', 'crudNameSingular', 'crudNameCap', 'modelName', 'viewName', 'routeGroup', 'routeNamePrefix', 'primaryKey', 'aclPermissionCreate', 'aclPermissionRead', 'aclPermissionUpdate', 'aclPermissionDelete', 'aclEndPermission'],
         /*
          * Add new stubs templates here if you need to, like action, datatable...
          * custom_template needs to be activated for this to work

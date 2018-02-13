@@ -22,6 +22,7 @@ class CrudControllerCommand extends GeneratorCommand
                             {--validations= : Validation rules for the fields.}
                             {--route-group= : Prefix of the route group.}
                             {--pagination=25 : The amount of models per page for index pages.}
+                            {--acl=yes : Include ACL permission middleware protecting CRUD routes.}
                             {--force : Overwrite already existing controller.}';
 
     /**
@@ -156,6 +157,19 @@ EOD;
             $whereSnippet .= "->";
         }
 
+        $aclMiddleware = '';
+        if ($this->option('acl') == 'yes') {
+            $aclMiddleware = <<<EOD
+// Basic ACL middleware using Laratrust
+
+        \$this->middleware('permission:$crudName.create')->only(['create', 'store']);
+        \$this->middleware('permission:$crudName.read')->only(['index', 'show']);
+        \$this->middleware('permission:$crudName.update')->only(['edit', 'update']);
+        \$this->middleware('permission:$crudName.delete')->only(['destroy']);
+EOD;
+
+        }
+
         return $this->replaceNamespace($stub, $name)
             ->replaceViewPath($stub, $viewPath)
             ->replaceViewName($stub, $viewName)
@@ -171,6 +185,7 @@ EOD;
             ->replacePaginationNumber($stub, $perPage)
             ->replaceFileSnippet($stub, $fileSnippet)
             ->replaceWhereSnippet($stub, $whereSnippet)
+            ->replaceAclMiddleware($stub, $aclMiddleware)
             ->replaceClass($stub, $name);
     }
 
@@ -385,6 +400,21 @@ EOD;
     protected function replaceWhereSnippet(&$stub, $whereSnippet)
     {
         $stub = str_replace('{{whereSnippet}}', $whereSnippet, $stub);
+
+        return $this;
+    }
+
+    /**
+     * Replace the ACL snippet for the given stub
+     *
+     * @param $stub
+     * @param $aclMiddleware
+     *
+     * @return $this
+     */
+    protected function replaceAclMiddleware(&$stub, $aclMiddleware)
+    {
+        $stub = str_replace('{{aclMiddleware}}', $aclMiddleware, $stub);
 
         return $this;
     }

@@ -9,11 +9,11 @@
                 <div class="panel panel-default">
                     <div class="panel-heading">%%crudNameCap%%</div>
                     <div class="panel-body">
-                        @permission('%%crudName%%.create')
+                        %%aclPermissionCreate%%
                         <a href="{{ route('%%routeNamePrefix%%%%viewName%%.create') }}" class="btn btn-success btn-sm" title="Add New %%modelName%%">
                             <i class="fa fa-plus" aria-hidden="true"></i> Add New
                         </a>
-                        @endpermission
+                        %%aclEndPermission%%
 
                         <form method="GET" action="{{ route('%%routeNamePrefix%%%%viewName%%.index') }}" accept-charset="UTF-8" class="navbar-form navbar-right" role="search">
                             <div class="input-group">
@@ -41,21 +41,21 @@
                                         <td>{{ $loop->iteration or $item->%%primaryKey%% }}</td>
                                         %%formBodyHtml%%
                                         <td>
-                                            @permission('%%crudName%%.read')
+                                            %%aclPermissionRead%%
                                             <a href="{{ route('%%routeNamePrefix%%%%viewName%%.show',  ['%%primaryKey%%' => $item->%%primaryKey%%]) }}" title="View %%modelName%%"><button class="btn btn-info btn-xs"><i class="fa fa-eye" aria-hidden="true"></i> View</button></a>
-                                            @endpermission
+                                            %%aclEndPermission%%
 
-                                            @permission('%%crudName%%.update')
+                                            %%aclPermissionUpdate%%
                                             <a href="{{ route('%%routeNamePrefix%%%%viewName%%.edit',  ['%%primaryKey%%' => $item->%%primaryKey%%]) }}" title="Edit %%modelName%%"><button class="btn btn-primary btn-xs"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Edit</button></a>
-                                            @endpermission
+                                            %%aclEndPermission%%
 
-                                            @permission('%%crudName%%.delete')
+                                            %%aclPermissionDelete%%
                                             <form method="POST" action="{{ route('%%routeNamePrefix%%%%viewName%%.destroy', ['%%primaryKey%%' => $item->%%primaryKey%%]) }}" accept-charset="UTF-8" style="display:inline">
                                                 {{ method_field('DELETE') }}
                                                 {{ csrf_field() }}
                                                 <button type="submit" class="btn btn-danger btn-xs" title="Delete %%modelName%%" onclick="return confirm(&quot;Confirm delete?&quot;)"><i class="fa fa-trash-o" aria-hidden="true"></i> Delete</button>
                                             </form>
-                                            @endpermission
+                                            %%aclEndPermission%%
                                         </td>
                                     </tr>
                                 @endforeach
