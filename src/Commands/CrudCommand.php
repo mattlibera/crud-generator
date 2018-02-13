@@ -31,7 +31,11 @@ class CrudCommand extends Command
                             {--form-helper=html : Helper for generating the form.}
                             {--localize=no : Allow to localize? yes|no.}
                             {--locales=en : Locales language type.}
-                            {--soft-deletes=no : Include soft deletes fields.}';
+                            {--soft-deletes=no : Include soft deletes fields.}
+                            {--acl=yes : Creates Roles and Permissions for the model.}
+                            {--acl-package=none : Name of the current package to use for ACL Roles/Permissions.}
+                            {--roles= : Custom ACL Roles to use instead of default CRUD.}
+                            {--permissions= : Custom ACL Permissions to use instead of default CRUD.}';
 
     /**
      * The console command description.
@@ -67,6 +71,20 @@ class CrudCommand extends Command
     public function handle()
     {
         $name = $this->argument('name');
+
+        // check if first letter of Model name is capitalized
+        if (preg_match('/[A-Z]/', substr($name, 0, 1)) === 0) {
+            $nameCorrectionChoice = $this->choice('The model name you entered did not start with a capital letter. We recommend that it does. Would you like to:', ['Cancel', 'Correct automatically', 'Proceed anyway'], 0);
+
+            if ($nameCorrectionChoice == 'Cancel') {
+                $this->info('CRUD generation canceled.');
+                return;
+            } else if ($nameCorrectionChoice == 'Correct automatically') {
+                $name = ucwords($name);
+                $this->line('Correcting name of model to ' . $name . ' and proceeding with CRUD generation.');
+            }
+        }
+
         $modelName = str_singular($name);
         $migrationName = str_plural(snake_case($name));
         $tableName = $migrationName;
@@ -135,7 +153,22 @@ class CrudCommand extends Command
         $this->call('crud:migration', ['name' => $migrationName, '--schema' => $migrationFields, '--pk' => $primaryKey, '--indexes' => $indexes, '--foreign-keys' => $foreignKeys, '--soft-deletes' => $softDeletes]);
         $this->call('crud:view', ['name' => $name, '--fields' => $fields, '--validations' => $validations, '--view-path' => $viewPath, '--route-group' => $routeGroup, '--route-name-prefix' => $this->routeNamePrefix, '--localize' => $localize, '--pk' => $primaryKey, '--form-helper' => $formHelper]);
 
-        // TODO - insert permissions and roles here
+        if ($this->option('acl') == 'yes') {
+            $aclArgumentsAndOptions = [
+                'name' => $name,
+                'package' => $this->option('acl-package') ?: 'none'
+            ];
+
+            if ($this->option('roles')) {
+                $aclArgumentsAndOptions['roles'] = $this->option('roles');
+            }
+
+            if ($this->option('permissions')) {
+                $aclArgumentsAndOptions['permissions'] = $this->option('permissions');
+            }
+
+            $this->call('crud:acl', $aclArgumentsAndOptions);
+        }
 
         if ($localize == 'yes') {
             $this->call('crud:lang', ['name' => $name, '--fields' => $fields, '--locales' => $locales]);

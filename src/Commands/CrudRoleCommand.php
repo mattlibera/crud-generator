@@ -63,17 +63,18 @@ class CrudRoleCommand extends GeneratorCommand
     protected function buildClass($name)
     {
         $model = $this->argument('name');
+        $roleName = snake_case($model);
 
         $stub = $this->files->get($this->getStub());
 
         $roles = $this->option('roles') ? json_decode($this->option('roles'), true) : [
             [
-                'name' => $model . '.viewer',
+                'name' => $roleName . '.viewer',
                 'display_name' => ucwords($model) . ' - Viewer',
                 'description' => 'Can view ' . str_plural($model),
             ],
             [
-                'name' => $model . '.editor',
+                'name' => $roleName . '.editor',
                 'display_name' => ucwords($model) . ' - Editor',
                 'description' => 'Can create, edit, and delete ' . str_plural($model),
             ],

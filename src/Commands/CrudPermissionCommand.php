@@ -63,27 +63,28 @@ class CrudPermissionCommand extends GeneratorCommand
     protected function buildClass($name)
     {
         $model = $this->argument('name');
+        $permissionName = snake_case($model);
 
         $stub = $this->files->get($this->getStub());
 
         $permissions = $this->option('permissions') ? json_decode($this->option('permissions'), true) : [
             [
-                'name' => $model . '.create',
+                'name' => $permissionName . '.create',
                 'display_name' => ucwords($model) . ' - Create',
                 'description' => 'Create ' . str_plural($model),
             ],
             [
-                'name' => $model . '.read',
+                'name' => $permissionName . '.read',
                 'display_name' => ucwords($model) . ' - Read',
                 'description' => 'Read / View ' . str_plural($model),
             ],
             [
-                'name' => $model . '.update',
+                'name' => $permissionName . '.update',
                 'display_name' => ucwords($model) . ' - Update',
                 'description' => 'Update / Edit ' . str_plural($model),
             ],
             [
-                'name' => $model . '.delete',
+                'name' => $permissionName . '.delete',
                 'display_name' => ucwords($model) . ' - Delete',
                 'description' => 'Delete ' . str_plural($model),
             ],

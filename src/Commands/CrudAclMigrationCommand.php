@@ -90,7 +90,7 @@ class CrudAclMigrationCommand extends GeneratorCommand
      */
     protected function getPath($name)
     {
-        return base_path('database/migrations/' . Carbon::now()->format('Y_m_d_his') . '_add_' . $this->argument('name') . '_roles_and_permissions.php');
+        return base_path('database/migrations/' . Carbon::now()->format('Y_m_d_his') . '_add_' . strtolower($this->argument('name')) . '_roles_and_permissions.php');
     }
 
     /**
@@ -105,9 +105,11 @@ class CrudAclMigrationCommand extends GeneratorCommand
     {
         $replaceString = '[';
         foreach($bindings as $role => $permissions) {
+            $role = snake_case($role);
             $replaceString .= "
             '$role' => [";
             foreach($permissions as $permission) {
+                $permission = snake_case($permission);
                 $replaceString .= "
                 '$permission',";
             }
