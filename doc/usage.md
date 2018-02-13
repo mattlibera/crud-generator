@@ -100,6 +100,49 @@ If you chose not to add the crud route in automatically (see above), you will ne
 Route::resource('posts', 'PostsController');
 ```
 
+### ACL (note: requires `uncgits/ccps-core` package)
+If you wish to include ACL elements (Roles / Permissions, etc.) for your CRUD automatically, then you can just run `crud:generate` as-is and then `php artisan migrate`. 
+
+The CCPS Core package is required at present because of the how the view and seeder stubs are set up. You may override these and try to use this in your own app if you want, but the `santigarcor/laratrust` is a requirement for any ACL items.
+
+#### Recommended - use when generating new CRUD sets
+
+It is recommended to simply allow `php artisan crud:generate` - your ACL items will be generated automatically, without any additional flags or options necessary.
+
+It is also recommended, however, to use the `--acl-package` option to specify the name of your package (this helps identify the roles/permissions that belong to your package in the database).
+
+#### Generating ACL items for existing models
+
+If you wish to try and scaffold ACL items for an existing model, you may try to run:
+```
+php artisan crud:acl Posts my/package-name
+```
+
+This will run all three of the below commands to give you everything you need to apply ACL items, but you will miss out on the Controller and View generation based on the ACL (e.g. you will need to add `@permission` directives in your views, and you will need to add controller middleware to control access). 
+
+To independently generate a Role seeder:
+```
+php artisan crud:role Posts my/package-name
+```
+
+To independently generate a Permission seeder:
+```
+php artisan crud:permission Posts my/package-name
+```
+
+To independently generate a Role seeder:
+```
+php artisan crud:role Posts my/package-name
+```
+
+#### Generating a CRUD set without ACL items
+
+If you wish to skip the ACL items when generating your CRUD set, simply add `--acl=no` to the artisan command:
+
+```
+php artisan crud:generate Posts --fields='title#string; content#text; category#select#options={"technology": "Technology", "tips": "Tips", "health": "Health"}' --view-path=admin --controller-namespace=Admin --route-group=admin --form-helper=html --acl=no
+```
+
 ### API Commands
 
 For api crud:

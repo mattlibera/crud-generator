@@ -21,6 +21,11 @@
 | `--localize` | Allow to localize. e.g. localize=yes  |
 | `--locales`  | Locales language type. e.g. locals=en |
 | `--soft-deletes` | Include soft deletes fields. eg. `--soft-deletes=yes` |
+| `--acl` | Include ACL elements (Roles / Permissions). Default 'yes' - change to 'no' to exclude, eg. `--acl=no` |
+| `--acl-package` | If generating ACL elements, inserts this name into DB with associated roles/permissions. e.g. `--acl-package=my/pkg` |
+| `--acl-admin-role` | Default 'yes'. Change if you do not use a Role with key 'admin' in your app, e.g. `--acl-admin-role=no` |
+| `--roles` | Supply your own Roles for the Seeder. Supply an array of arrays: `[['name'=>'products.viewer, 'display_name'=>'Products - Viewer', 'description'=>'Can view Products']]` |
+| `--permissions` | Supply your own Permissions for the Seeder. Supply an array of arrays: `[['name'=>'products.create, 'display_name'=>'Products - Create', 'description'=>'Create Products']]`
 
 
 ### Controller Options:
@@ -36,6 +41,7 @@
 | `--validations` | Validation rules for the fields "col_name#rules_set" e.g. ``` "title#min:10|max:30|required" ``` - See https://laravel.com/docs/master/validation#available-validation-rules |
 | `--route-group` | Prefix of the route group |
 | `--pagination` | The amount of models per page for index pages |
+| `--acl` | Include ACL middleware in the constructor. Default 'yes' - change to 'no' to exclude, eg. `--acl=no` |
 | `--force` | Overwrite already existing controller. |
 
 ### View Options:
@@ -50,6 +56,7 @@
 | `--form-helper` | Helper for the form. eg. `--form-helper=html`, `--form-helper=laravelcollective` |
 | `--custom-data` | Some additional values to use in the crud. |
 | `--localize` | Allow to localize. e.g. localize=yes  |
+| `--acl` | Include ACL Blade directives - wraps buttons in `@permission()` directives to conform to ACL. Default 'yes' - change to 'no' to exclude, eg. `--acl=no` |
 
 ### Model Options:
 
@@ -107,5 +114,40 @@
 | `--validations` | Validation rules for the fields "col_name#rules_set" e.g. ``` "title#min:10|max:30|required" ``` - See https://laravel.com/docs/master/validation#available-validation-rules |
 | `--pagination` | The amount of models per page for index pages |
 | `--force` | Overwrite already existing controller. |
+
+### ACL Options:
+
+`php artisan crud:acl` - a wrapper for `crud:role`, `crud:permission`, and `crud:acl-migration`
+
+| Option    | Description |
+| ---       | ---     |
+| `--roles` | Supply your own Roles for the Seeder. Supply an array of arrays: `[['name'=>'products.viewer, 'display_name'=>'Products - Viewer', 'description'=>'Can view Products']]` |
+| `--permissions` | Supply your own Permissions for the Seeder. Supply an array of arrays: `[['name'=>'products.create, 'display_name'=>'Products - Create', 'description'=>'Create Products']]`
+| `--admin-role` | Default 'yes'. Change if you do not use a Role with key 'admin' in your app, e.g. `--acl-admin-role=no` |
+
+### Role Options:
+
+`php artisan crud:role` - Generates a Role Seeder
+
+| Option    | Description |
+| ---       | ---     |
+| `--roles` | Supply your own Roles for the Seeder. Supply an array of arrays: `[['name'=>'products.viewer, 'display_name'=>'Products - Viewer', 'description'=>'Can view Products']]` |
+
+### Permission Options:
+
+`php artisan crud:permission` - Generates a Permission Seeder
+
+| Option    | Description |
+| ---       | ---     |
+| `--permissions` | Supply your own Permissions for the Seeder. Supply an array of arrays: `[['name'=>'products.create, 'display_name'=>'Products - Create', 'description'=>'Create Products']]`
+
+### ACL Migration Options:
+
+`php artisan crud:acl-migration` - creates a database migration that applies the Role and Permission seeders and associates Permissions to Roles according to the bindings specified.
+
+| Option    | Description |
+| ---       | ---     |
+| `--bindings` | Supply your own Bindings for the Seeder. Supply an array of permissions keyed by role: `['admin'=>['products.create','products.read','products.update','products.delete']]`
+| `--admin-role` | Default 'yes'. Applies Permissions from the seeder class to the 'admin' role automatically. Change to 'no' if you do not use a Role with key 'admin' in your app, e.g. `--acl-admin-role=no` |
 
 [&larr; Back to index](README.md)

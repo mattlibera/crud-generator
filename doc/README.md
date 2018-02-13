@@ -1,6 +1,8 @@
 # Documentation
 
-This documentation will guide you to generate your stuffs for your application. Let's begin!
+This documentation will guide you to generate CRUD elements for your application. Let's begin!
+
+**NOTE: This fork is designed for use with UNCG ITS's CCPS Core package. You may still be able to modify the stubs, etc., for use without this package but for the moment it's not supported officially.**
 
 ## Getting Started
 
