@@ -1,4 +1,6 @@
-@extends('layouts.app')
+@extends('layouts.wrapper', [
+    'pageTitle' => '%%modelName%% | Index'
+])
 
 @section('content')
     <div class="container">
