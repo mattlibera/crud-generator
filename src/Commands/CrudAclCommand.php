@@ -15,7 +15,8 @@ class CrudAclCommand extends Command
                             {name : The name of the model.}
                             {package : The name of the package to which to bind these roles.}
                             {--roles= : JSON string for custom roles.}
-                            {--permissions= : JSON string for custom permissions.}';
+                            {--permissions= : JSON string for custom permissions.}
+                            {--admin-role=yes : Also bind permissions to a role named "admin".}';
 
     /**
      * The console command description.
@@ -52,6 +53,9 @@ class CrudAclCommand extends Command
             $roleArgumentsAndOptions['--roles'] = $this->option('roles');
         }
 
+        $this->line('Generating role seeder...');
+        $this->call('crud:role', $roleArgumentsAndOptions);
+
         $permissionArgumentsAndOptions = [
             'name' => $name,
             'package' => $package,
@@ -60,12 +64,18 @@ class CrudAclCommand extends Command
             $permissionArgumentsAndOptions['--permissions'] = $this->option('permissions');
         }
 
-        $this->line('Generating role seeder...');
-        $this->call('crud:role', $roleArgumentsAndOptions);
         $this->line('Generating permission seeder...');
         $this->call('crud:permission', $permissionArgumentsAndOptions);
+
+        $aclArgumentsAndOptions = [
+            'name' => $name
+        ];
+        if ($this->option('admin-role')) {
+            $aclArgumentsAndOptions['--admin-role'] = $this->option('admin-role');
+        }
+
         $this->line('Generating migration file...');
-        $this->call('crud:acl-migration', ['name' => $name]);
+        $this->call('crud:acl-migration', $aclArgumentsAndOptions);
 
         $this->line('Dumping autoload...');
         $this->call('ccps:dump-autoload');

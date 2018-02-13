@@ -14,7 +14,8 @@ class CrudAclMigrationCommand extends GeneratorCommand
      */
     protected $signature = 'crud:acl-migration
                             {name : The name of the model.}
-                            {--bindings : Custom array of role=>permissionArray bindings to use.}';
+                            {--bindings : Custom array of role=>permissionArray bindings to use.}
+                            {--admin-role=yes : Also bind permissions to a role named "admin".}';
     /**
      * The console command description.
      *
@@ -75,6 +76,15 @@ class CrudAclMigrationCommand extends GeneratorCommand
                 $model . '.delete',
             ]
         ];
+
+        if ($this->option('admin-role') == 'yes') {
+            $bindings['admin'] = [
+                $model . '.create',
+                $model . '.read',
+                $model . '.update',
+                $model . '.delete',
+            ];
+        }
 
         $ret = $this->replaceBindings($stub, $bindings)
             ->replaceClassName($stub, ucwords($model));

@@ -34,6 +34,7 @@ class CrudCommand extends Command
                             {--soft-deletes=no : Include soft deletes fields.}
                             {--acl=yes : Creates Roles and Permissions for the model.}
                             {--acl-package=none : Name of the current package to use for ACL Roles/Permissions.}
+                            {--acl-admin-role=yes : Also bind permissions to a role named "admin".}
                             {--roles= : Custom ACL Roles to use instead of default CRUD.}
                             {--permissions= : Custom ACL Permissions to use instead of default CRUD.}';
 
@@ -160,11 +161,15 @@ class CrudCommand extends Command
             ];
 
             if ($this->option('roles')) {
-                $aclArgumentsAndOptions['roles'] = $this->option('roles');
+                $aclArgumentsAndOptions['--roles'] = $this->option('roles');
             }
 
             if ($this->option('permissions')) {
-                $aclArgumentsAndOptions['permissions'] = $this->option('permissions');
+                $aclArgumentsAndOptions['--permissions'] = $this->option('permissions');
+            }
+
+            if ($this->option('acl-admin-role')) {
+                $aclArgumentsAndOptions['--admin-role'] = $this->option('acl-admin-role');
             }
 
             $this->call('crud:acl', $aclArgumentsAndOptions);
