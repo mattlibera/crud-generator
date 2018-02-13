@@ -1,31 +1,27 @@
 # Laravel CRUD Generator
 
-[![Build Status](https://travis-ci.org/appzcoder/crud-generator.svg)](https://travis-ci.org/appzcoder/crud-generator.svg)
-[![Total Downloads](https://poser.pugx.org/appzcoder/crud-generator/d/total.svg)](https://packagist.org/packages/appzcoder/crud-generator)
-[![Latest Stable Version](https://poser.pugx.org/appzcoder/crud-generator/v/stable.svg)](https://packagist.org/packages/appzcoder/crud-generator)
-[![License](https://poser.pugx.org/appzcoder/crud-generator/license.svg)](https://packagist.org/packages/appzcoder/crud-generator)
-
 This Generator package provides various generators like CRUD, API, Controller, Model, Migration, View for your painless development of your applications.
+
+This is a fork of the original `mattlibera/crud-generator` package.
 
 ## Requirements
     Laravel >=5.1
     PHP >= 5.5.9
+    CCPS Core (UNCG ITS package, available privately)
 
 ## Installation
 ```
-composer require appzcoder/crud-generator --dev
+composer require mattlibera/crud-generator --dev
 ```
 
 ## Documentation
 Go through to the [detailed documentation](doc#readme)
 
-## Screencast
+## Fork Author
 
-[![Screencast](http://img.youtube.com/vi/831-PFBsYfw/0.jpg)](https://www.youtube.com/watch?v=K2G3kMQtY5Y)
+[Matt Libera](http://mattlibera.com) - email: [Email Me](mailto:me@mattlibera.com)
 
-#### If you're still looking for easier one then try this [Admin Panel](https://github.com/appzcoder/laravel-admin)
-
-## Author
+## Original Author
 
 [Sohel Amin](http://sohelamin.com) :email: [Email Me](mailto:sohelamincse@gmail.com)
 

@@ -1,6 +1,6 @@
 <?php
 
-namespace Appzcoder\CrudGenerator\Commands;
+namespace Mattlibera\CrudGenerator\Commands;
 
 use Illuminate\Console\Command;
 
