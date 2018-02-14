@@ -146,7 +146,7 @@ EOD;
             foreach ($fieldsArray as $index => $item) {
                 $itemArray = explode('#', $item);
 
-                if (trim($itemArray[1]) == 'file') {
+                if (trim($itemArray[1]) == 'file' || trim($itemArray[1] == 'image')) {
                     $fileSnippet .= "\n\n" . str_replace('{{fieldName}}', trim($itemArray[0]), $snippet) . "\n";
                 }
 
