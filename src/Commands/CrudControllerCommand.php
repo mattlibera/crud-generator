@@ -124,7 +124,8 @@ class CrudControllerCommand extends GeneratorCommand
 
         $snippet = <<<EOD
         if (\$request->hasFile('{{fieldName}}')) {
-            foreach(\$request['{{fieldName}}'] as \$file){
+            \${{fieldName}}Array = is_array(\$request->{{fieldName}}) ? \$request->{{fieldName}} : [\$request->{{fieldName}}];
+            foreach(\${{fieldName}}Array as \$file){
                 \$uploadPath = public_path('/uploads/{{fieldName}}');
 
                 \$extension = \$file->getClientOriginalExtension();

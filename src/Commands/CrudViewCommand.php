@@ -73,6 +73,7 @@ class CrudViewCommand extends Command
         'enum' => 'select',
         'select' => 'select',
         'file' => 'file',
+        'picture' => 'file',
     ];
 
     /**
@@ -381,7 +382,16 @@ class CrudViewCommand extends Command
             }
             $this->formHeadingHtml .= '<th>' . $label . '</th>';
             $this->formBodyHtml .= '<td>{{ $item->' . $field . ' }}</td>';
-            $this->formBodyHtmlForShowView .= '<tr><th> ' . $label . ' </th><td> {{ $%%crudNameSingular%%->' . $field . ' }} </td></tr>';
+            $this->formBodyHtmlForShowView .= '<tr><th> ' . $label . ' </th><td>';
+            if ($value['type'] == 'file') {
+                $this->formBodyHtmlForShowView .= '<a href="{{ asset(\'uploads/' . $field . '/\' . $' . $this->crudName . '->' . $value['name'] . ') }}">Download File</a>';
+            } else if ($value['type'] == 'image') {
+                $this->formBodyHtmlForShowView .= '<img src="{{ asset(\'uploads/' . $field . '/\' . $' . $this->crudNameSingular . '->' . $value['name'] . ') }}" alt="">';
+            } else {
+                $this->formBodyHtmlForShowView .= '{{ $%%crudNameSingular%%->' . $field . ' }}';
+            }
+
+            $this->formBodyHtmlForShowView .= '</td></tr>';
 
             $i++;
         }
