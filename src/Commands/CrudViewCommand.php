@@ -386,7 +386,17 @@ class CrudViewCommand extends Command
             if ($value['type'] == 'file') {
                 $this->formBodyHtmlForShowView .= '<a href="{{ asset(\'uploads/' . $field . '/\' . $' . $this->crudNameSingular . '->' . $value['name'] . ') }}">Download File</a>';
             } else if ($value['type'] == 'image') {
-                $this->formBodyHtmlForShowView .= '<img src="{{ asset(\'uploads/' . $field . '/\' . $' . $this->crudNameSingular . '->' . $value['name'] . ') }}" alt="">';
+                $this->formBodyHtmlForShowView .= <<<EOD
+<div class="row">
+    <div class="col-md-2">
+        <a href="{{ asset('uploads/$field/' . {$this->crudNameSingular}->{$value['name']}) }}" target="_blank">
+            <img src="{{ asset('uploads/$field/' . {$this->crudNameSingular}->{$value['name']}) }}" alt="" class="img-thumbnail">
+        </a>
+        <p>(click to enlarge)</p>
+    </div>
+</div>
+EOD;
+
             } else {
                 $this->formBodyHtmlForShowView .= '{{ $%%crudNameSingular%%->' . $field . ' }}';
             }
