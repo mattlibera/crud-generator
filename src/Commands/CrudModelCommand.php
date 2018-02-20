@@ -17,7 +17,8 @@ class CrudModelCommand extends GeneratorCommand
                             {--fillable= : The names of the fillable columns.}
                             {--relationships= : The relationships for the model}
                             {--pk=id : The name of the primary key.}
-                            {--soft-deletes=no : Include soft deletes fields.}';
+                            {--soft-deletes=no : Include soft deletes fields.}
+                            {--audits=yes : Implement Model Auditing (owen-it/laravel-auditing).}';
 
     /**
      * The console command description.
@@ -72,6 +73,7 @@ class CrudModelCommand extends GeneratorCommand
         $primaryKey = $this->option('pk');
         $relationships = trim($this->option('relationships')) != '' ? explode(',', trim($this->option('relationships'))) : [];
         $softDeletes = $this->option('soft-deletes');
+        $auditing = $this->option('auditing');
 
         if (!empty($primaryKey)) {
             $primaryKey = <<<EOD
@@ -88,7 +90,8 @@ EOD;
             ->replaceTable($stub, $table)
             ->replaceFillable($stub, $fillable)
             ->replacePrimaryKey($stub, $primaryKey)
-            ->replaceSoftDelete($stub, $softDeletes);
+            ->replaceSoftDelete($stub, $softDeletes)
+            ->replaceAuditing($stub, $auditing);
 
         foreach ($relationships as $rel) {
             // relationshipname#relationshiptype#args_separated_by_pipes
@@ -182,6 +185,29 @@ EOD;
         } else {
             $stub = str_replace('{{softDeletes}}', '', $stub);
             $stub = str_replace('{{useSoftDeletes}}', '', $stub);
+        }
+
+        return $this;
+    }
+
+    /**
+     * Replace the (optional) model auditing part for the given stub.
+     *
+     * @param  string  $stub
+     * @param  string  $replaceSoftDelete
+     *
+     * @return $this
+     */
+    protected function replaceAuditing(&$stub, $replaceAuditing)
+    {
+        if ($replaceAuditing == 'yes') {
+            $stub = str_replace('{{softDeletes}}', "use OwenIt\Auditing\Contracts\Auditable as AuditableContract;\n    use OwenIt\Auditing\Auditable as AuditableTrait;\n    ", $stub);
+            $stub = str_replace('{{auditingContract}}', " implements AuditableContract", $stub);
+            $stub = str_replace('{{useAuditing}}', "use AuditableTrait;\n", $stub);
+        } else {
+            $stub = str_replace('{{softDeletes}}', '', $stub);
+            $stub = str_replace('{{auditingContract}}', '', $stub);
+            $stub = str_replace('{{useAuditing}}', '', $stub);
         }
 
         return $this;

@@ -4,8 +4,10 @@ namespace DummyNamespace;
 
 use Illuminate\Database\Eloquent\Model;
 {{useSoftDeletes}}
-class DummyClass extends Model
+{{useAuditing}}
+class DummyClass extends Model{{auditingContract}}
 {
+    {{auditing}}
     {{softDeletes}}/**
      * The database table used by the model.
      *

@@ -26,6 +26,7 @@
 | `--acl-admin-role` | Default 'yes'. Change if you do not use a Role with key 'admin' in your app, e.g. `--acl-admin-role=no` |
 | `--roles` | Supply your own Roles for the Seeder. Supply an array of arrays: `[['name'=>'products.viewer, 'display_name'=>'Products - Viewer', 'description'=>'Can view Products']]` |
 | `--permissions` | Supply your own Permissions for the Seeder. Supply an array of arrays: `[['name'=>'products.create, 'display_name'=>'Products - Create', 'description'=>'Create Products']]`
+| `--auditing` | Implement Model Auditing (`owen-it/laravel-auditing` package) eg. `--soft-deletes=yes` - default is yes |
 
 
 ### Controller Options:
@@ -67,6 +68,7 @@
 | `--relationships` | The relationships for the model. e.g. `--relationships="comments#hasMany#App\Comment"` in the format |
 | `--pk` | The name of the primary key |
 | `--soft-deletes` | Include soft deletes fields. eg. `--soft-deletes=yes` |
+| `--auditing` | Implement Model Auditing (`owen-it/laravel-auditing` package) eg. `--soft-deletes=yes` - default is yes |
 
 ### Migration Options:
 

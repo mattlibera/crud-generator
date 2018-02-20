@@ -25,7 +25,8 @@
         "php": ">=5.5.9",
         "illuminate/support": "^5.1",
         "laravelcollective/html": "^5.1",
-        "santigarcor/laratrust": "5.0.*"
+        "santigarcor/laratrust": "5.0.*",
+        "owen-it/laravel-auditing":"^6.0"
     },
     "require-dev": {
         "mockery/mockery": "^0.9.6",

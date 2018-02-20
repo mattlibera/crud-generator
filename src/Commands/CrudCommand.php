@@ -36,7 +36,8 @@ class CrudCommand extends Command
                             {--acl-package=none : Name of the current package to use for ACL Roles/Permissions.}
                             {--acl-admin-role=yes : Also bind permissions to a role named "admin".}
                             {--roles= : Custom ACL Roles to use instead of default CRUD.}
-                            {--permissions= : Custom ACL Permissions to use instead of default CRUD.}';
+                            {--permissions= : Custom ACL Permissions to use instead of default CRUD.}
+                            {--auditing=yes : Implement Model Auditing (owen-it/laravel-auditing).}';
 
     /**
      * The console command description.
@@ -148,11 +149,12 @@ class CrudCommand extends Command
 
         $formHelper = $this->option('form-helper');
         $softDeletes = $this->option('soft-deletes');
+        $auditing = $this->option('auditing');
 
         $acl = $this->option('acl');
 
         $this->call('crud:controller', ['name' => $controllerNamespace . $name . 'Controller', '--crud-name' => $name, '--model-name' => $modelName, '--model-namespace' => $modelNamespace, '--view-path' => $viewPath, '--route-group' => $routeGroup, '--pagination' => $perPage, '--fields' => $fields, '--validations' => $validations, '--acl' => $acl]);
-        $this->call('crud:model', ['name' => $modelNamespace . $modelName, '--fillable' => $fillable, '--table' => $tableName, '--pk' => $primaryKey, '--relationships' => $relationships, '--soft-deletes' => $softDeletes]);
+        $this->call('crud:model', ['name' => $modelNamespace . $modelName, '--fillable' => $fillable, '--table' => $tableName, '--pk' => $primaryKey, '--relationships' => $relationships, '--soft-deletes' => $softDeletes, '--auditing' => $auditing]);
         $this->call('crud:migration', ['name' => $migrationName, '--schema' => $migrationFields, '--pk' => $primaryKey, '--indexes' => $indexes, '--foreign-keys' => $foreignKeys, '--soft-deletes' => $softDeletes]);
         $this->call('crud:view', ['name' => $name, '--fields' => $fields, '--validations' => $validations, '--view-path' => $viewPath, '--route-group' => $routeGroup, '--route-name-prefix' => $this->routeNamePrefix, '--localize' => $localize, '--pk' => $primaryKey, '--form-helper' => $formHelper, '--acl' => $acl]);
 
