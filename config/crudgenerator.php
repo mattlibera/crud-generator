@@ -25,6 +25,17 @@ return [
      */
     'custom_delimiter' => ['%%', '%%'],
 
+    /**
+     * (optional) Hash work factor options array (will be passed as second argument to the Hash:: facade for password items).
+     * Example (for argon2):
+     * [
+     *   'memory' => 1024,
+     *   'time' => 2,
+     *   'threads' => 2,
+     * ]
+     */
+    'hash_work_factor' => null,
+
     /*
     |--------------------------------------------------------------------------
     | Dynamic templating

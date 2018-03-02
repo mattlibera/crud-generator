@@ -381,9 +381,11 @@ class CrudViewCommand extends Command
             if ($this->option('localize') == 'yes') {
                 $label = '{{ trans(\'' . $this->crudName . '.' . $field . '\') }}';
             }
-            $this->formHeadingHtml .= '<th>' . $label . '</th>';
-            $this->formBodyHtml .= '<td>{{ $item->' . $field . ' }}</td>';
-            $this->formBodyHtmlForShowView .= '<tr><th> ' . $label . ' </th><td>';
+            if ($value['type'] != 'password') {
+                $this->formHeadingHtml .= '<th>' . $label . '</th>';
+                $this->formBodyHtml .= '<td>{{ $item->' . $field . ' }}</td>';
+                $this->formBodyHtmlForShowView .= '<tr><th> ' . $label . ' </th><td>';
+            }
             if ($value['type'] == 'file') {
                 $this->formBodyHtmlForShowView .= '<a href="{{ asset(\'uploads/' . $field . '/\' . $' . $this->crudNameSingular . '->' . $value['name'] . ') }}">Download File</a>';
             } else if ($value['type'] == 'image') {
@@ -399,10 +401,13 @@ class CrudViewCommand extends Command
 EOD;
 
             } else {
-                $this->formBodyHtmlForShowView .= '{{ $%%crudNameSingular%%->' . $field . ' }}';
+                if ($value['type'] != 'password') {
+                    $this->formBodyHtmlForShowView .= '{{ $%%crudNameSingular%%->' . $field . ' }}';
+                }
             }
-
-            $this->formBodyHtmlForShowView .= '</td></tr>';
+            if ($value['type'] != 'password') {
+                $this->formBodyHtmlForShowView .= '</td></tr>';
+            }
 
             $i++;
         }

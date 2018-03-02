@@ -140,19 +140,38 @@ EOD;
         $fieldsArray = explode(';', $fields);
         $fileSnippet = '';
         $whereSnippet = '';
+        $hashSnippet = '';
 
         if ($fields) {
             $x = 0;
             foreach ($fieldsArray as $index => $item) {
                 $itemArray = explode('#', $item);
 
-                if (trim($itemArray[1]) == 'file' || trim($itemArray[1] == 'image')) {
+                $fieldName = trim($itemArray[0]);
+                $fieldType = trim($itemArray[1]);
+
+                if ($fieldType == 'file' || $fieldType == 'image') {
                     $fileSnippet .= "\n\n" . str_replace('{{fieldName}}', trim($itemArray[0]), $snippet) . "\n";
                 }
 
-                $fieldName = trim($itemArray[0]);
 
-                $whereSnippet .= ($index == 0) ? "where('$fieldName', 'LIKE', \"%\$keyword%\")" . "\n                " : "->orWhere('$fieldName', 'LIKE', \"%\$keyword%\")" . "\n                ";
+                if ($fieldType == 'password') {
+                    $hashWorkFactor = config('crudgenerator.hash_work_factor');
+                    $hashWorkFactorSnippet = "Hash::make(\$requestData['$fieldName'])";
+                    if (is_null($hashWorkFactor) && is_array($hashWorkFactor)) {
+                        $flattened = '[';
+                        foreach($hashWorkFactor as $index => $value) {
+                            $flattened = "'$index' => '$value',";
+                        }
+                        $flattened .= ']';
+                        $hashWorkFactorSnippet = "Hash::make(\$requestData['$fieldName'], $flattened)";
+                    }
+
+                    $hashSnippet .= "\$requestData['$fieldName'] = $hashWorkFactorSnippet;\n";
+
+                } else {
+                    $whereSnippet .= ($index == 0) ? "where('$fieldName', 'LIKE', \"%\$keyword%\")" . "\n                " : "->orWhere('$fieldName', 'LIKE', \"%\$keyword%\")" . "\n                ";
+                }
             }
 
             $whereSnippet .= "->";
@@ -186,6 +205,7 @@ EOD;
             ->replacePaginationNumber($stub, $perPage)
             ->replaceFileSnippet($stub, $fileSnippet)
             ->replaceWhereSnippet($stub, $whereSnippet)
+            ->replaceHashSnippet($stub, $hashSnippet)
             ->replaceAclMiddleware($stub, $aclMiddleware)
             ->replaceClass($stub, $name);
     }
@@ -401,6 +421,21 @@ EOD;
     protected function replaceWhereSnippet(&$stub, $whereSnippet)
     {
         $stub = str_replace('{{whereSnippet}}', $whereSnippet, $stub);
+
+        return $this;
+    }
+
+    /**
+     * Replace the hash snippet for the given stub
+     *
+     * @param $stub
+     * @param $whereSnippet
+     *
+     * @return $this
+     */
+    protected function replaceHashSnippet(&$stub, $hashSnippet)
+    {
+        $stub = str_replace('{{hashSnippet}}', $hashSnippet, $stub);
 
         return $this;
     }
