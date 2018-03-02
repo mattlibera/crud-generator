@@ -201,13 +201,13 @@ EOD;
     protected function replaceAuditing(&$stub, $replaceAuditing)
     {
         if ($replaceAuditing == 'yes') {
-            $stub = str_replace('{{softDeletes}}', "use OwenIt\Auditing\Contracts\Auditable as AuditableContract;\n    use OwenIt\Auditing\Auditable as AuditableTrait;\n    ", $stub);
+            $stub = str_replace('{{useAuditing}}', "use OwenIt\Auditing\Contracts\Auditable as AuditableContract;\n    use OwenIt\Auditing\Auditable as AuditableTrait;\n    ", $stub);
             $stub = str_replace('{{auditingContract}}', " implements AuditableContract", $stub);
-            $stub = str_replace('{{useAuditing}}', "use AuditableTrait;\n", $stub);
+            $stub = str_replace('{{auditingTrait}}', "use AuditableTrait;\n", $stub);
         } else {
-            $stub = str_replace('{{softDeletes}}', '', $stub);
-            $stub = str_replace('{{auditingContract}}', '', $stub);
             $stub = str_replace('{{useAuditing}}', '', $stub);
+            $stub = str_replace('{{auditingContract}}', '', $stub);
+            $stub = str_replace('{{auditingTrait}}', '', $stub);
         }
 
         return $this;
