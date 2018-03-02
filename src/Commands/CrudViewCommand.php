@@ -679,6 +679,8 @@ EOD;
      */
     protected function createSelectField($item)
     {
+        dd($item);
+
         $start = $this->delimiter[0];
         $end = $this->delimiter[1];
 
