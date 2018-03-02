@@ -63,7 +63,7 @@ class CrudPermissionCommand extends GeneratorCommand
     protected function buildClass($name)
     {
         $model = $this->argument('name');
-        $permissionName = snake_case($model);
+        $permissionName = strtolower($model);
 
         $stub = $this->files->get($this->getStub());
 

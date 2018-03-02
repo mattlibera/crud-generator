@@ -63,7 +63,7 @@ class CrudRoleCommand extends GeneratorCommand
     protected function buildClass($name)
     {
         $model = $this->argument('name');
-        $roleName = snake_case($model);
+        $roleName = strtolower($model);
 
         $stub = $this->files->get($this->getStub());
 

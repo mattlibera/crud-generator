@@ -1,12 +1,12 @@
 <div class="form-check">
-  <input class="form-check-input" type="radio" name="{{ %1$s }}" id="radio-{{ %1$s }}-1" value="1" {{ (isset($%%crudNameSingular%%) && 1 == $%%crudNameSingular%%->%1$s) ? 'checked' : '' }}>
-  <label class="form-check-label" for="radio-{{ %1$s }}-1">
+  <input class="form-check-input" type="radio" name="%1$s" id="radio-%1$s-1" value="1" {{ (isset($%%crudNameSingular%%) && 1 == $%%crudNameSingular%%->%1$s) ? 'checked' : '' }}>
+  <label class="form-check-label" for="radio-%1$s-1">
     Yes
   </label>
 </div>
 <div class="form-check">
-  <input class="form-check-input" type="radio" name="{{ %1$s }}" id="radio-{{ %1$s }}-2" value="option1" @if (isset($%%crudNameSingular%%)) {{ (0 == $%%crudNameSingular%%->%1$s) ? 'checked' : '' }} @else {{ 'checked' }} @endif>
-  <label class="form-check-label" for="radio-{{ %1$s }}-2">
+  <input class="form-check-input" type="radio" name="%1$s" id="radio-%1$s-2" value="option1" @if (isset($%%crudNameSingular%%)) {{ (0 == $%%crudNameSingular%%->%1$s) ? 'checked' : '' }} @else {{ 'checked' }} @endif>
+  <label class="form-check-label" for="radio-%1$s-2">
     No
   </label>
 </div>

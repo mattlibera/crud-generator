@@ -121,7 +121,7 @@ class CrudMigrationCommand extends GeneratorCommand
                 $data[$x]['name'] = trim($fieldArray[0]);
                 $data[$x]['type'] = trim($fieldArray[1]);
 
-                if ($this->typeLookup[$data[$x]['type']] == 'enum') {
+                if (isset($this->typeLookup[$data[$x]['type']]) && $this->typeLookup[$data[$x]['type']] == 'enum') {
                     $thirdArgument = explode('=', trim($fieldArray[2]));
                     if ($thirdArgument[0] != 'options') {
                         throw new \Exception('Select and Enum types require options parameter!');

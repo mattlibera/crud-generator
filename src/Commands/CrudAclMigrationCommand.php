@@ -115,11 +115,11 @@ class CrudAclMigrationCommand extends GeneratorCommand
     {
         $replaceString = '[';
         foreach($bindings as $role => $permissions) {
-            $role = snake_case($role);
+            $role = strtolower($role);
             $replaceString .= "
             '$role' => [";
             foreach($permissions as $permission) {
-                $permission = snake_case($permission);
+                $permission = strtolower($permission);
                 $replaceString .= "
                 '$permission',";
             }

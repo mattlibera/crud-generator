@@ -74,6 +74,7 @@ class CrudViewCommand extends Command
         'select' => 'select',
         'file' => 'file',
         'image' => 'file',
+        'radio' => 'radio',
     ];
 
     /**
@@ -408,10 +409,11 @@ EOD;
 
         // ACL
         if ($this->option('acl') == 'yes') {
-            $this->aclPermissionCreate = "@permission('{$this->crudName}.create')";
-            $this->aclPermissionRead = "@permission('{$this->crudName}.read')";
-            $this->aclPermissionUpdate = "@permission('{$this->crudName}.update')";
-            $this->aclPermissionDelete = "@permission('{$this->crudName}.delete')";
+            $aclName = strtolower($this->argument('name'));
+            $this->aclPermissionCreate = "@permission('{$aclName}.create')";
+            $this->aclPermissionRead = "@permission('{$aclName}.read')";
+            $this->aclPermissionUpdate = "@permission('{$aclName}.update')";
+            $this->aclPermissionDelete = "@permission('{$aclName}.delete')";
             $this->aclEndPermission = "@endpermission";
         }
 
