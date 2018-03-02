@@ -18,7 +18,7 @@ class CrudModelCommand extends GeneratorCommand
                             {--relationships= : The relationships for the model}
                             {--pk=id : The name of the primary key.}
                             {--soft-deletes=no : Include soft deletes fields.}
-                            {--audits=yes : Implement Model Auditing (owen-it/laravel-auditing).}';
+                            {--auditing=yes : Implement Model Auditing (owen-it/laravel-auditing).}';
 
     /**
      * The console command description.

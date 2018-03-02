@@ -44,6 +44,7 @@ class CrudMigrationCommand extends GeneratorCommand
         'datetime' => 'dateTime',
         'time' => 'time',
         'timestamp' => 'timestamp',
+        'string' => 'string',
         'text' => 'text',
         'mediumtext' => 'mediumText',
         'longtext' => 'longText',
@@ -120,6 +121,15 @@ class CrudMigrationCommand extends GeneratorCommand
                 $data[$x]['name'] = trim($fieldArray[0]);
                 $data[$x]['type'] = trim($fieldArray[1]);
 
+                if ($this->typeLookup[$data[$x]['type']] == 'enum') {
+                    $thirdArgument = explode('=', trim($fieldArray[2]));
+                    if ($thirdArgument[0] != 'options') {
+                        throw new \Exception('Select and Enum types require options parameter!');
+                    }
+
+                    $data[$x]['options'] = $thirdArgument[1];
+                }
+
                 $data[$x]['modifier'] = '';
 
                 $modifierLookup = [
@@ -144,8 +154,12 @@ class CrudMigrationCommand extends GeneratorCommand
         foreach ($data as $item) {
             if (isset($this->typeLookup[$item['type']])) {
                 $type = $this->typeLookup[$item['type']];
-
-                $schemaFields .= "\$table->" . $type . "('" . $item['name'] . "')";
+                if ($type != 'enum') {
+                    $schemaFields .= "\$table->" . $type . "('" . $item['name'] . "')";
+                } else {
+                    $enumOptions = array_keys(json_decode($item['options'], true));
+                    $schemaFields .= "\$table->enum('" . $item['name'] . "', ['" . implode("','", $enumOptions) . "'])->default('" . $enumOptions[0] . "')";
+                }
             } else {
                 $schemaFields .= "\$table->string('" . $item['name'] . "')";
             }

@@ -342,7 +342,7 @@ class CrudViewCommand extends Command
                 $this->formFields[$x]['type'] = trim($itemArray[1]);
                 $this->formFields[$x]['required'] = preg_match('/' . $itemArray[0] . '/', $validations) ? true : false;
 
-                if ($this->formFields[$x]['type'] == 'select' && isset($itemArray[2])) {
+                if (($this->formFields[$x]['type'] == 'select' || $this->formFields[$x]['type'] == 'enum')&& isset($itemArray[2])) {
                     $options = trim($itemArray[2]);
                     $options = str_replace('options=', '', $options);
 
@@ -679,8 +679,6 @@ EOD;
      */
     protected function createSelectField($item)
     {
-        dd($item);
-
         $start = $this->delimiter[0];
         $end = $this->delimiter[1];
 
