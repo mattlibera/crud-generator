@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 {{useAuditing}}
 class DummyClass extends Model{{auditingContract}}
 {
-    {{auditing}}
+    {{auditingTrait}}
     {{softDeletes}}/**
      * The database table used by the model.
      *
