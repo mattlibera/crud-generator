@@ -8,21 +8,25 @@
             <div class="col">
                 <div class="card">
                     <div class="card-header">%%crudNameCap%%</div>
-                    <div class="card-body">
-                        %%aclPermissionCreate%%
-                        <a href="{{ route('%%routeNamePrefix%%%%viewName%%.create') }}" class="btn btn-success btn-sm" title="Add New %%modelName%%">
-                            <i class="fa fa-plus" aria-hidden="true"></i> Add New
-                        </a>
-                        %%aclEndPermission%%
+                    <div class="card-body row">
+                        <div class="col">
+                            %%aclPermissionCreate%%
+                            <a href="{{ route('%%routeNamePrefix%%%%viewName%%.create') }}" class="btn btn-success btn-sm" title="Add New %%modelName%%">
+                                <i class="fa fa-plus" aria-hidden="true"></i> Add New
+                            </a>
+                            %%aclEndPermission%%
+                        </div>
 
-                        <form method="GET" action="{{ route('%%routeNamePrefix%%%%viewName%%.index') }}" accept-charset="UTF-8" role="search">
-                            <div class="input-group mb-3">
-                                <input type="text" class="form-control" placeholder="Search..." aria-label="Search" name="search" value="{{ request('search') }}">
-                                <div class="input-group-append">
-                                    <button type="submit" class="btn btn-dark"><i class="fa fa-search"></i></button>
+                        <div class="col3">
+                            <form method="GET" action="{{ route('%%routeNamePrefix%%%%viewName%%.index') }}" accept-charset="UTF-8" role="search">
+                                <div class="input-group mb-3">
+                                    <input type="text" class="form-control" placeholder="Search..." aria-label="Search" name="search" value="{{ request('search') }}">
+                                    <div class="input-group-append">
+                                        <button type="submit" class="btn btn-dark"><i class="fa fa-search"></i></button>
+                                    </div>
                                 </div>
-                            </div>
-                        </form>
+                            </form>
+                        </div>
 
                         <br/>
                         <br/>
