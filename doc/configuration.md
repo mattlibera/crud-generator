@@ -35,6 +35,11 @@ Set your delimiter which you use for your template vars. The default delimiter i
 ```
 Note: You should use the delimiter same as yours template files.
 
+### Hash Work Factor
+
+For password fields we use the `Hash::` facade, which will hash the entry based on your configuration in `config/hashing.php`. If you supply an array here it will be passed in as the second argument (the work factor). See Laravel docs for details.
+
+
 ### View Template Vars
 
 This configuration will help you to use any custom template vars in the views `index`, `form`, `create`, `edit`, `show`

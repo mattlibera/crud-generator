@@ -5,8 +5,8 @@ This Generator package provides various generators like CRUD, API, Controller, M
 This is a fork of the original `appzcoder/crud-generator` package ([https://github.com/appzcoder/crud-generator](https://github.com/appzcoder/crud-generator))
 
 ## Requirements
-    Laravel >=5.1
-    PHP >= 5.5.9
+    Laravel >=5.6
+    PHP >= 7.0.0
     CCPS Core (UNCG ITS package, available privately)
 
 ## Installation

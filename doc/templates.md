@@ -1,3 +1,7 @@
+## Built-in Templates
+
+By default this package works with Bootstrap 4. Read below to apply your own custom templates.
+
 ## Custom Templates
 
 The package allows user to extensively customize or use own templates.

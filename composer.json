@@ -22,7 +22,7 @@
         }
     ],
     "require": {
-        "php": ">=5.5.9",
+        "php": ">=7.0.0",
         "illuminate/support": "^5.1",
         "laravelcollective/html": "^5.1",
         "santigarcor/laratrust": "5.0.*",
