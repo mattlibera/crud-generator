@@ -570,9 +570,21 @@ EOD;
 
         $required = $item['required'] ? 'required' : '';
 
+        $type = $this->typeLookup[$item['type']];
+
         $markup = File::get($this->viewDirectoryPath . 'form-fields/form-field.blade.stub');
+
+        // filename handling
+        if ($type == 'file') {
+            $filename = '@if(isset($%%crudNameSingular%%->%%itemName%%)) <small class="form-text text-muted">Current: {{ $%%crudNameSingular%%->%%itemName%% }}</small> @endif';
+        } else {
+            $filename = '';
+        }
+
+        // start with filename string as it will inject others.
+        $markup = str_replace($start . 'filename' . $end, $filename, $markup);
         $markup = str_replace($start . 'required' . $end, $required, $markup);
-        $markup = str_replace($start . 'fieldType' . $end, $this->typeLookup[$item['type']], $markup);
+        $markup = str_replace($start . 'fieldType' . $end, $type, $markup);
         $markup = str_replace($start . 'itemName' . $end, $item['name'], $markup);
         $markup = str_replace($start . 'crudNameSingular' . $end, $this->crudNameSingular, $markup);
 
