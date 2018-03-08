@@ -392,8 +392,8 @@ class CrudViewCommand extends Command
                 $this->formBodyHtmlForShowView .= <<<EOD
 <div class="row">
     <div class="col-md-2">
-        <a href="{{ asset('uploads/$field/' . {$this->crudNameSingular}->{$value['name']}) }}" target="_blank">
-            <img src="{{ asset('uploads/$field/' . {$this->crudNameSingular}->{$value['name']}) }}" alt="" class="img-thumbnail">
+        <a href="{{ asset('uploads/$field/' . \${$this->crudNameSingular}->{$value['name']}) }}" target="_blank">
+            <img src="{{ asset('uploads/$field/' . \${$this->crudNameSingular}->{$value['name']}) }}" alt="" class="img-thumbnail">
         </a>
         <p>(click to enlarge)</p>
     </div>
