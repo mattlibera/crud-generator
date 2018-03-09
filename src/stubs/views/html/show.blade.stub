@@ -10,19 +10,21 @@
                     <div class="card-header">%%modelName%% {{ $%%crudNameSingular%%->%%primaryKey%% }}</div>
                     <div class="card-body">
 
-                        <a href="{{ route('%%routeNamePrefix%%%%viewName%%.index') }}" title="Back"><button class="btn btn-warning btn-sm"><i class="fa fa-arrow-left" aria-hidden="true"></i> Back</button></a>
+                        <a href="{{ route('%%routeNamePrefix%%%%viewName%%.index') }}" title="Back"><button class="btn btn-warning btn-sm"><i class="fas fa-arrow-left" aria-hidden="true"></i> Back</button></a>
 
                         %%aclPermissionUpdate%%
-                        <a href="{{ route('%%routeNamePrefix%%%%viewName%%.edit', ['%%primaryKey%%' => $%%crudNameSingular%%->%%primaryKey%%]) }}" title="Edit %%modelName%%"><button class="btn btn-primary btn-sm"><i class="fa fa-edit" aria-hidden="true"></i> Edit</button></a>
+                        <a href="{{ route('%%routeNamePrefix%%%%viewName%%.edit', ['%%primaryKey%%' => $%%crudNameSingular%%->%%primaryKey%%]) }}" title="Edit %%modelName%%"><button class="btn btn-primary btn-sm"><i class="fas fa-edit" aria-hidden="true"></i> Edit</button></a>
                         %%aclEndPermission%%
 
                         %%aclPermissionDelete%%
                         <form method="POST" action="{{ route('%%routeNamePrefix%%%%crudName%%.destroy', ['%%primaryKey%%' => $%%crudNameSingular%%->%%primaryKey%%]) }}" accept-charset="UTF-8" style="display:inline">
                             {{ method_field('DELETE') }}
                             {{ csrf_field() }}
-                            <button type="submit" class="btn btn-danger btn-sm" title="Delete %%modelName%%" onclick="return confirm(&quot;Confirm delete?&quot;)"><i class="fa fa-trash" aria-hidden="true"></i> Delete</button>
+                            <button type="submit" class="btn btn-danger btn-sm" title="Delete %%modelName%%" onclick="return confirm(&quot;Confirm delete?&quot;)"><i class="fas fa-trash" aria-hidden="true"></i> Delete</button>
                         </form>
                         %%aclEndPermission%%
+
+                        <a href="{{ route('%%routeNamePrefix%%%%viewName%%.audits', ['%%primaryKey%%' => $%%crudNameSingular%%->%%primaryKey%%]) }}" title="Audits for %%modelName%%"><button class="btn btn-light btn-sm"><i class="fas fa-clock" aria-hidden="true"></i> Audits</button></a>
 
                         <br/>
                         <br/>

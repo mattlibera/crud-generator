@@ -12,7 +12,7 @@
                         <div class="col">
                             %%aclPermissionCreate%%
                             <a href="{{ route('%%routeNamePrefix%%%%viewName%%.create') }}" class="btn btn-success btn-sm" title="Add New %%modelName%%">
-                                <i class="fa fa-plus" aria-hidden="true"></i> Add New
+                                <i class="fas fa-plus" aria-hidden="true"></i> Add New
                             </a>
                             %%aclEndPermission%%
                         </div>
@@ -22,7 +22,7 @@
                                 <div class="input-group mb-3">
                                     <input type="text" class="form-control" placeholder="Search..." aria-label="Search" name="search" value="{{ request('search') }}">
                                     <div class="input-group-append">
-                                        <button type="submit" class="btn btn-dark"><i class="fa fa-search"></i></button>
+                                        <button type="submit" class="btn btn-dark"><i class="fas fa-search"></i></button>
                                     </div>
                                 </div>
                             </form>
@@ -44,18 +44,18 @@
                                         %%formBodyHtml%%
                                         <td>
                                             %%aclPermissionRead%%
-                                            <a href="{{ route('%%routeNamePrefix%%%%viewName%%.show',  ['%%primaryKey%%' => $item->%%primaryKey%%]) }}" title="View %%modelName%%"><button class="btn btn-info btn-sm"><i class="fa fa-eye" aria-hidden="true"></i> View</button></a>
+                                            <a href="{{ route('%%routeNamePrefix%%%%viewName%%.show',  ['%%primaryKey%%' => $item->%%primaryKey%%]) }}" title="View %%modelName%%"><button class="btn btn-info btn-sm"><i class="fas fa-eye" aria-hidden="true"></i> View</button></a>
                                             %%aclEndPermission%%
 
                                             %%aclPermissionUpdate%%
-                                            <a href="{{ route('%%routeNamePrefix%%%%viewName%%.edit',  ['%%primaryKey%%' => $item->%%primaryKey%%]) }}" title="Edit %%modelName%%"><button class="btn btn-primary btn-sm"><i class="fa fa-edit" aria-hidden="true"></i> Edit</button></a>
+                                            <a href="{{ route('%%routeNamePrefix%%%%viewName%%.edit',  ['%%primaryKey%%' => $item->%%primaryKey%%]) }}" title="Edit %%modelName%%"><button class="btn btn-primary btn-sm"><i class="fas fa-edit" aria-hidden="true"></i> Edit</button></a>
                                             %%aclEndPermission%%
 
                                             %%aclPermissionDelete%%
                                             <form method="POST" action="{{ route('%%routeNamePrefix%%%%viewName%%.destroy', ['%%primaryKey%%' => $item->%%primaryKey%%]) }}" accept-charset="UTF-8" style="display:inline">
                                                 {{ method_field('DELETE') }}
                                                 {{ csrf_field() }}
-                                                <button type="submit" class="btn btn-danger btn-sm" title="Delete %%modelName%%" onclick="return confirm(&quot;Confirm delete?&quot;)"><i class="fa fa-trash" aria-hidden="true"></i> Delete</button>
+                                                <button type="submit" class="btn btn-danger btn-sm" title="Delete %%modelName%%" onclick="return confirm(&quot;Confirm delete?&quot;)"><i class="fas fa-trash" aria-hidden="true"></i> Delete</button>
                                             </form>
                                             %%aclEndPermission%%
                                         </td>

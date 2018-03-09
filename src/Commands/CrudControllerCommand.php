@@ -183,7 +183,7 @@ EOD;
 // Basic ACL middleware using Laratrust
 
         \$this->middleware('permission:$crudName.create')->only(['create', 'store']);
-        \$this->middleware('permission:$crudName.read')->only(['index', 'show']);
+        \$this->middleware('permission:$crudName.read')->only(['index', 'show', 'audits']);
         \$this->middleware('permission:$crudName.update')->only(['edit', 'update']);
         \$this->middleware('permission:$crudName.delete')->only(['destroy']);
 EOD;

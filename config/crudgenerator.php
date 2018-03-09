@@ -77,6 +77,7 @@ return [
         'create' => ['crudName', 'crudNameCap', 'modelName', 'modelNameCap', 'viewName', 'routeGroup', 'routeNamePrefix', 'viewTemplateDir'],
         'edit' => ['crudName', 'crudNameSingular', 'crudNameCap', 'modelNameCap', 'modelName', 'viewName', 'routeGroup', 'routeNamePrefix', 'primaryKey', 'viewTemplateDir'],
         'show' => ['formHeadingHtml', 'formBodyHtml', 'formBodyHtmlForShowView', 'crudName', 'crudNameSingular', 'crudNameCap', 'modelName', 'viewName', 'routeGroup', 'routeNamePrefix', 'primaryKey', 'aclPermissionCreate', 'aclPermissionRead', 'aclPermissionUpdate', 'aclPermissionDelete', 'aclEndPermission'],
+        'audits' => ['modelName', 'crudNameSingular', 'primaryKey'],
         /*
          * Add new stubs templates here if you need to, like action, datatable...
          * custom_template needs to be activated for this to work

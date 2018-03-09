@@ -1,0 +1,12 @@
+@extends('layouts.wrapper', [
+    'pageTitle' => '%%modelName%% | Audits'
+])
+
+@section('content')
+    <div class="row">
+        <div class="col">
+            <h1>Audits for %%modelName%% {{ $%%crudNameSingular%%->%%primaryKey%% }}</h1>
+            @include('partials.audit-table', ['audits' => $audits])
+        </div>
+    </div>
+@endsection()
