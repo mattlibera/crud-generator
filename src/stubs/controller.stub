@@ -132,8 +132,8 @@ class DummyClass extends Controller
     }
 
     public function audits({{modelName}} ${{crudNameSingular}}) {
-            ${{crudNameSingular}}->load('audits.user');
-            $audits = ${{crudNameSingular}}->audits->sortByDesc('created_at');
-            return view('{{viewPath}}{{viewName}}.audits', compact(['{{crudNameSingular}}', 'audits']));
-        }
+        ${{crudNameSingular}}->load('audits.user');
+        $audits = ${{crudNameSingular}}->audits->sortByDesc('created_at');
+        return view('{{viewPath}}{{viewName}}.audits', compact(['{{crudNameSingular}}', 'audits']));
+    }
 }

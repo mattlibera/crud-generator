@@ -219,7 +219,7 @@ class CrudCommand extends Command
         } else {
             $routesText = [
 "Route::resource('" . $this->routeName . "', '" . $this->controller . "');
-    Route::get('" . $this->routeName . "/{id}/audits', '" . $this->controller . "@audits')->name('" . $this->routeName . ".audits')
+Route::get('" . $this->routeName . "/{" . str_singular($this->routeName) ."}/audits', '" . $this->controller . "@audits')->name('" . $this->routeName . ".audits');
 "];
         }
         return $routesText;
