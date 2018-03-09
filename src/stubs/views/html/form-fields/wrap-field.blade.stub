@@ -2,6 +2,6 @@
     <label for="%1$s" class="col control-label">{{ %2$s }}</label>
     <div class="col">
         %3$s
-        {!! $errors->first('%1$s', '<p class="help-block">:message</p>') !!}
+        {!! $errors->first('%1$s', '<div class="invalid-feedback">:message</div>') !!}
     </div>
 </div>
